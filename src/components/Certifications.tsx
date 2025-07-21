@@ -2203,8 +2203,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar, Award, Eye, Maximize2, ChevronLeft, ChevronRight, Download } from "lucide-react";
 import { useState, useEffect } from "react";
-import nextGenProCert from "@/assets/certificates/nextgenpro-cert.jpg";
-import techMogulCert from "@/assets/certificates/techmaghi-cert.jpg";
+
 
 // CountUp component with countdown animation every 6 seconds
 const CountUp = ({ end, suffix = "", className }) => {
@@ -2285,13 +2284,14 @@ const Certifications = () => {
       image: "/lovable-uploads/4d6e1249-e5d5-4d13-ad41-ea2b59f29a82.png"
     },
     {
-      title: "Tech Moghi Certificate",
+      title: "TechMaghi Certificate",
       issuer: "TechMaghi Institute",
       date: "2024",
       type: "Professional Certification",
       description: "Technology leadership and entrepreneurship certification focusing on emerging tech trends",
       skills: ["Technology Leadership", "Entrepreneurship", "Digital Innovation", "Business Strategy", "Tech Trends"],
-      image: techMogulCert
+      image: "/assets/certificates/techmaghi-cert.jpg"
+      
     },
     {
       title: "NextGen Pro Certificate",
@@ -2300,7 +2300,7 @@ const Certifications = () => {
       type: "Professional Certification",
       description: "Advanced professional development certification demonstrating next-generation skills and expertise",
       skills: ["Leadership", "Innovation", "Strategic Thinking", "Professional Development", "Project Management"],
-      image: nextGenProCert
+      image: "/assets/certificates/nextgenpro-cert.png"
     },
     {
       title: "Getting Started with Microsoft Excel",

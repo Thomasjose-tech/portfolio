@@ -723,7 +723,7 @@ const Projects = () => {
       ],
       technologies: ["IoT", "Web Dashboard", "Real-time Monitoring", "Automation"],
       type: "Hardware & Software",
-      pdfUrl: "/src/assets/certificates/thomas.pdf"
+      pdfUrl: "/assets/certificates/thomas.pdf"
     },
     {
       title: "Multipurpose Agriculture Robot",
@@ -737,7 +737,7 @@ const Projects = () => {
       ],
       technologies: ["Robotics", "IoT Sensors", "Automation", "Embedded Systems", "Remote Control"],
       type: "Robotics & IoT",
-      pdfUrl: "/src/assets/certificates/grp11.pdf"
+      pdfUrl: "/assets/certificates/grp11.pdf"
     }
   ];
 
