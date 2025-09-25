@@ -1032,9 +1032,7 @@ const About = () => {
                 
                 {/* Mobile swipe hint */}
                 <div className="text-center mt-4">
-                  <p className="text-xs text-muted-foreground">
-                    Swipe left or right to navigate
-                  </p>
+                  
                 </div>
               </CardContent>
             </Card>
