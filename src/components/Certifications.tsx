@@ -2842,9 +2842,7 @@ const Certifications = () => {
         {/* Mobile Swipe Instructions */}
         {isMobile && totalPages > 1 && (
           <div className="text-center mb-6 animate-fade-in">
-            <p className="text-sm text-muted-foreground">
-              👆 Swipe left or right to navigate through certificates
-            </p>
+            
           </div>
         )}
 
