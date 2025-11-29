@@ -1022,7 +1022,6 @@ const Contact = () => {
     message: ""
   });
   const [isVisible, setIsVisible] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -1055,9 +1054,10 @@ const Contact = () => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated) {
+          if (entry.isIntersecting) {
             setIsVisible(true);
-            setHasAnimated(true);
+          } else {
+            setIsVisible(false);
           }
         });
       },
@@ -1077,7 +1077,7 @@ const Contact = () => {
         observer.unobserve(section);
       }
     };
-  }, [hasAnimated]);
+  }, []);
 
   const contactInfo = [
     {
