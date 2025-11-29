@@ -2739,7 +2739,6 @@
 //                       ? 'bg-blue-600 dark:bg-blue-400 w-8'
 //                       : 'bg-slate-300 dark:bg-slate-600 hover:bg-slate-400 dark:hover:bg-slate-500'
 //                   }`}
-//                 />
 //               ))}
 //             </div>
 //           </div>
