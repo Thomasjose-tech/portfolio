@@ -6275,6 +6275,645 @@
 // };
 
 // export default Projects;
+// import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+// import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
+// import { Calendar, Github, FileText } from "lucide-react";
+// import { useEffect, useRef, useState } from "react";
+
+// const Projects = () => {
+//   const [isVisible, setIsVisible] = useState(false);
+//   const [flippedCards, setFlippedCards] = useState({});
+//   const sectionRef = useRef(null);
+//   const projectRefs = useRef([]);
+
+//   const projects = [
+//     {
+//       title: "Smart Pet Feeder",
+//       period: "Aug 2023 - Jan 2024",
+//       description: "A comprehensive smart feeding solution for pets with automated scheduling and remote monitoring capabilities.",
+//       features: [
+//         "Created and implemented a smart feeder system to dispense food to pets at scheduled intervals",
+//         "Integrated a web-based dashboard for real-time remote monitoring and control",
+//         "Ensured consistent feeding cycles, enhancing convenience for pet owners"
+//       ],
+//       technologies: ["IoT", "Web Dashboard", "Real-time Monitoring", "Automation"],
+//       type: "Hardware & Software",
+//       pdfUrl: "/assets/certificates/thomas.pdf",
+//       backContent: {
+//         challenges: "Designing reliable food dispensing mechanism and ensuring consistent connectivity for remote monitoring.",
+//         learnings: "Gained expertise in IoT integration, real-time data processing, and hardware-software communication protocols.",
+//         impact: "Reduced pet feeding inconsistencies by 85% and provided pet owners with peace of mind through remote monitoring."
+//       }
+//     },
+//     {
+//       title: "Multipurpose Agriculture Robot",
+//       period: "Mar 2024 - Feb 2025",
+//       description: "An intelligent robotic system designed to automate multiple agricultural tasks and improve farming efficiency.",
+//       features: [
+//         "Built a smart robotic system capable of performing multiple agricultural tasks such as soil monitoring, seed sowing, and spraying",
+//         "Integrated sensors and actuators to automate processes and reduce manual labor",
+//         "Enhanced farming efficiency and productivity through the application of embedded systems",
+//         "Enabled remote operation and monitoring, reducing the need for constant human supervision"
+//       ],
+//       technologies: ["Robotics", "IoT Sensors", "Automation", "Embedded Systems", "Remote Control"],
+//       type: "Analytics & IoT",
+//       pdfUrl: "/assets/certificates/grp11.pdf",
+//       backContent: {
+//         challenges: "Integrating multiple agricultural functions into a single platform while maintaining cost-effectiveness.",
+//         learnings: "Advanced robotics programming, sensor fusion techniques, and precision agriculture methodologies.",
+//         impact: "Increased farming efficiency by 60% and reduced labor costs by 45% through automation of repetitive tasks."
+//       }
+//     }
+//   ];
+
+//   useEffect(() => {
+//     const observer = new IntersectionObserver(
+//       (entries) => {
+//         entries.forEach((entry) => {
+//           const index = projectRefs.current.indexOf(entry.target);
+//           if (entry.isIntersecting) {
+//             // Element is visible
+//             if (entry.target && index !== -1) {
+//               setTimeout(() => {
+//                 entry.target.style.opacity = "1";
+//                 entry.target.style.transform = "translateY(0)";
+//               }, index * 200);
+//             }
+//           } else {
+//             // Element is not visible - reset animation
+//             if (entry.target) {
+//               entry.target.style.opacity = "0";
+//               entry.target.style.transform = "translateY(32px)";
+//             }
+//           }
+//         });
+//       },
+//       { 
+//         threshold: 0.2,
+//         rootMargin: "0px"
+//       }
+//     );
+
+//     projectRefs.current.forEach((projectRef) => {
+//       if (projectRef) {
+//         observer.observe(projectRef);
+//       }
+//     });
+
+//     return () => {
+//       projectRefs.current.forEach((projectRef) => {
+//         if (projectRef) {
+//           observer.unobserve(projectRef);
+//         }
+//       });
+//     };
+//   }, []);
+
+//   useEffect(() => {
+//     const headerObserver = new IntersectionObserver(
+//       (entries) => {
+//         entries.forEach((entry) => {
+//           if (entry.isIntersecting) {
+//             setIsVisible(true);
+//           }
+//         });
+//       },
+//       { 
+//         threshold: 0.1,
+//         rootMargin: "50px"
+//       }
+//     );
+
+//     if (sectionRef.current) {
+//       headerObserver.observe(sectionRef.current);
+//     }
+
+//     return () => {
+//       if (sectionRef.current) {
+//         headerObserver.unobserve(sectionRef.current);
+//       }
+//     };
+//   }, []);
+
+//   const handleViewDetails = (project) => {
+//     if (project.pdfUrl) {
+//       window.open(project.pdfUrl, "_blank");
+//     } else {
+//       alert(`PDF for ${project.title} will be available soon!`);
+//     }
+//   };
+
+//   const handleCardHover = (index, isHovering, e) => {
+//     // Check if hovering over button area
+//     const isButtonArea = e?.target.closest('button') || e?.target.closest('.no-flip-zone');
+    
+//     // Only trigger on hover for desktop and not on button areas
+//     if (window.innerWidth >= 1024 && !isButtonArea) {
+//       setFlippedCards(prev => ({
+//         ...prev,
+//         [index]: isHovering
+//       }));
+//     }
+//   };
+
+//   const handleCardClick = (index, e) => {
+//     // Don't toggle if clicking on buttons
+//     if (e?.target.closest('button') || e?.target.closest('.no-flip-zone')) {
+//       return;
+//     }
+    
+//     // Toggle flip on click for mobile/tablet
+//     setFlippedCards(prev => ({
+//       ...prev,
+//       [index]: !prev[index]
+//     }));
+//   };
+
+//   const addToProjectRefs = (el, index) => {
+//     if (el && !projectRefs.current[index]) {
+//       projectRefs.current[index] = el;
+//     }
+//   };
+
+//   return (
+//     <section 
+//       id="projects" 
+//       ref={sectionRef}
+//       className="py-12 sm:py-16 lg:py-20 px-0 sm:px-6 lg:px-8 bg-muted/30 overflow-hidden"
+//     >
+//       <div className="container mx-auto max-w-7xl px-3 sm:px-0">
+//         {/* Header Section */}
+//         <div 
+//           className={`text-center mb-12 sm:mb-16 transition-all duration-700 ease-out ${
+//             isVisible 
+//               ? "opacity-100 translate-y-0" 
+//               : "opacity-0 translate-y-8"
+//           }`}
+//         >
+//           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">Featured Projects</h2>
+//           <div className="h-1 w-20 sm:w-24 bg-primary mx-auto mb-6 sm:mb-8" />
+//           <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl mx-auto px-4">
+//             Innovative solutions combining hardware and software to solve real-world problems
+//           </p>
+//           <p className="text-xs sm:text-sm text-muted-foreground mt-2 px-4">
+//             💡 <span className="hidden lg:inline">Hover</span><span className="lg:hidden">Tap</span> on cards to flip and see detailed insights
+//           </p>
+//         </div>
+
+//         {/* Projects Grid */}
+//         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 w-full mx-auto px-0">
+//           {projects.map((project, index) => (
+//             <div
+//               key={project.title}
+//               ref={(el) => addToProjectRefs(el, index)}
+//               className="transition-all duration-700 ease-out opacity-0 translate-y-8 project-card-wrapper w-full px-3 sm:px-0"
+//             >
+//               {/* Flip Card Container */}
+//               <div 
+//                 className="flip-card w-full h-full"
+//                 onMouseEnter={(e) => handleCardHover(index, true, e)}
+//                 onMouseLeave={(e) => handleCardHover(index, false, e)}
+//                 onClick={(e) => handleCardClick(index, e)}
+//               >
+//                 <div className={`flip-card-inner ${flippedCards[index] ? 'flip-card-flipped' : ''}`}>
+                  
+//                   {/* Front Side */}
+//                   <div className="flip-card-front">
+//                     <Card className="h-full bg-gradient-card shadow-elegant border-2 border-primary/20 hover:border-primary/40 transition-all duration-300 flex flex-col">
+//                       <CardHeader className="pb-3 animate-fade-in">
+//                         <div className="flex flex-col sm:flex-row items-start justify-between gap-2 mb-3 animate-slide-in-left">
+//                           <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 text-xs sm:text-sm">
+//                             {project.type}
+//                           </Badge>
+//                           <div className="flex items-center text-muted-foreground text-xs sm:text-sm">
+//                             <Calendar size={14} className="mr-1" />
+//                             {project.period}
+//                           </div>
+//                         </div>
+//                         <CardTitle className="text-lg sm:text-xl mb-2 animate-slide-in-up" style={{animationDelay: '0.1s'}}>
+//                           {project.title}
+//                         </CardTitle>
+//                         <CardDescription className="text-sm sm:text-base leading-relaxed animate-fade-in" style={{animationDelay: '0.2s'}}>
+//                           {project.description}
+//                         </CardDescription>
+//                       </CardHeader>
+
+//                       <CardContent className="space-y-3 sm:space-y-4 pb-4 flex-1 flex flex-col">
+//                         {/* Key Features */}
+//                         <div className="flex-1 animate-fade-in" style={{animationDelay: '0.3s'}}>
+//                           <h4 className="font-semibold mb-1.5 sm:mb-2 text-primary text-sm sm:text-base animate-slide-in-right">Key Features & Achievements</h4>
+//                           <ul className="space-y-1.5">
+//                             {project.features.map((feature, featureIndex) => (
+//                               <li 
+//                                 key={featureIndex} 
+//                                 className="text-muted-foreground text-xs sm:text-sm leading-relaxed flex items-start animate-slide-in-left"
+//                                 style={{animationDelay: `${0.4 + featureIndex * 0.1}s`}}
+//                               >
+//                                 <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full mr-2 sm:mr-3 mt-1.5 sm:mt-2 flex-shrink-0" />
+//                                 {feature}
+//                               </li>
+//                             ))}
+//                           </ul>
+//                         </div>
+
+//                         {/* Technologies */}
+//                         <div className="animate-fade-in" style={{animationDelay: '0.7s'}}>
+//                           <h4 className="font-semibold mb-1.5 sm:mb-2 text-primary text-sm sm:text-base animate-slide-in-right">Technologies Used</h4>
+//                           <div className="flex flex-wrap gap-1.5 sm:gap-2">
+//                             {project.technologies.map((tech, techIndex) => {
+//                               const getIcon = (techName) => {
+//                                 switch (techName.toLowerCase()) {
+//                                   case "iot": return "🌐";
+//                                   case "web dashboard": return "📊";
+//                                   case "real-time monitoring": return "📡";
+//                                   case "automation": return "⚡";
+//                                   case "robotics": return "🤖";
+//                                   case "iot sensors": return "📱";
+//                                   case "embedded systems": return "🔧";
+//                                   case "remote control": return "📡";
+//                                   default: return "💻";
+//                                 }
+//                               };
+
+//                               return (
+//                                 <Badge
+//                                   key={tech}
+//                                   variant="secondary"
+//                                   className="bg-primary/5 text-primary hover:bg-primary/10 transition-colors duration-300 flex items-center gap-1 text-xs animate-scale-in"
+//                                   style={{animationDelay: `${0.8 + techIndex * 0.05}s`}}
+//                                 >
+//                                   <span className="text-xs">{getIcon(tech)}</span>
+//                                   {tech}
+//                                 </Badge>
+//                               );
+//                             })}
+//                           </div>
+//                         </div>
+
+//                         {/* Action Buttons */}
+//                         <div 
+//                           className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-1 sm:pt-2 no-flip-zone animate-fade-in" 
+//                           style={{animationDelay: '1s'}}
+//                           onMouseEnter={(e) => {
+//                             e.stopPropagation();
+//                             if (window.innerWidth >= 1024) {
+//                               setFlippedCards(prev => ({
+//                                 ...prev,
+//                                 [index]: false
+//                               }));
+//                             }
+//                           }}
+//                         >
+//                           <Button
+//                             variant="default"
+//                             size="sm"
+//                             className="bg-primary hover:bg-primary/90 text-xs h-9 sm:h-9 px-3 sm:px-4 w-full sm:w-auto animate-bounce-in"
+//                             style={{animationDelay: '1.1s'}}
+//                             onClick={(e) => {
+//                               e.stopPropagation();
+//                               handleViewDetails(project);
+//                             }}
+//                           >
+//                             <FileText size={14} className="mr-1.5" />
+//                             View Details
+//                           </Button>
+//                           <Button
+//                             variant="outline"
+//                             size="sm"
+//                             className="border-primary/20 text-primary hover:bg-primary/10 w-full sm:flex-1 h-9 sm:h-9 animate-bounce-in"
+//                             style={{animationDelay: '1.2s'}}
+//                             onClick={(e) => {
+//                               e.stopPropagation();
+//                               const url =
+//                                 project.title === "Smart Pet Feeder"
+//                                   ? "https://github.com/Thomasjose-tech/Smart-Pet-Feeder"
+//                                   : "https://github.com/Thomasjose-tech";
+//                               window.open(url, "_blank");
+//                             }}
+//                           >
+//                             <Github size={14} className="mr-1.5" />
+//                             Code
+//                           </Button>
+//                         </div>
+//                       </CardContent>
+//                     </Card>
+//                   </div>
+
+//                   {/* Back Side */}
+//                   <div className="flip-card-back">
+//                     <Card className="h-full bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 p-4 sm:p-5 flex flex-col">
+//                       <div className="h-full flex flex-col">
+//                         {/* Header */}
+//                         <div className="text-center mb-4 sm:mb-5 animate-fade-in">
+//                           <Badge variant="outline" className="bg-primary/20 text-primary border-primary/30 mb-2 text-xs sm:text-sm animate-scale-in">
+//                             Project Insights
+//                           </Badge>
+//                           <h3 className="text-lg sm:text-xl font-bold text-primary animate-slide-in-up" style={{animationDelay: '0.1s'}}>
+//                             {project.title}
+//                           </h3>
+//                         </div>
+
+//                         {/* Content */}
+//                         <div className="space-y-3 sm:space-y-3 flex-1">
+//                           {/* Challenges */}
+//                           <div className="animate-fade-in" style={{animationDelay: '0.2s'}}>
+//                             <h4 className="font-semibold mb-1.5 text-primary text-sm sm:text-base flex items-center gap-1.5 animate-slide-in-left">
+//                               <span className="text-base">🚧</span>
+//                               Key Challenges
+//                             </h4>
+//                             <p className="text-gray-900 dark:text-gray-900 text-sm sm:text-base leading-relaxed bg-white/95 p-2.5 sm:p-3 rounded-lg shadow-sm animate-slide-in-right" style={{animationDelay: '0.3s'}}>
+//                               {project.backContent.challenges}
+//                             </p>
+//                           </div>
+
+//                           {/* Learnings */}
+//                           <div className="animate-fade-in" style={{animationDelay: '0.4s'}}>
+//                             <h4 className="font-semibold mb-1.5 text-primary text-sm sm:text-base flex items-center gap-1.5 animate-slide-in-left">
+//                               <span className="text-base">📚</span>
+//                               Key Learnings
+//                             </h4>
+//                             <p className="text-gray-900 dark:text-gray-900 text-sm sm:text-base leading-relaxed bg-white/95 p-2.5 sm:p-3 rounded-lg shadow-sm animate-slide-in-right" style={{animationDelay: '0.5s'}}>
+//                               {project.backContent.learnings}
+//                             </p>
+//                           </div>
+
+//                           {/* Impact */}
+//                           <div className="animate-fade-in" style={{animationDelay: '0.6s'}}>
+//                             <h4 className="font-semibold mb-1.5 text-primary text-sm sm:text-base flex items-center gap-1.5 animate-slide-in-left">
+//                               <span className="text-base">📈</span>
+//                               Project Impact
+//                             </h4>
+//                             <p className="text-gray-900 dark:text-gray-900 text-sm sm:text-base leading-relaxed bg-white/95 p-2.5 sm:p-3 rounded-lg shadow-sm animate-slide-in-right" style={{animationDelay: '0.7s'}}>
+//                               {project.backContent.impact}
+//                             </p>
+//                           </div>
+//                         </div>
+
+//                         {/* Actions */}
+//                         <div 
+//                           className="flex flex-col sm:flex-row gap-2.5 pt-2 sm:pt-2 mt-auto no-flip-zone animate-fade-in" 
+//                           style={{animationDelay: '0.8s'}}
+//                           onMouseEnter={(e) => {
+//                             e.stopPropagation();
+//                             if (window.innerWidth >= 1024) {
+//                               setFlippedCards(prev => ({
+//                                 ...prev,
+//                                 [index]: false
+//                               }));
+//                             }
+//                           }}
+//                         >
+//                           <Button
+//                             variant="default"
+//                             size="sm"
+//                             className="bg-primary hover:bg-primary/90 text-sm w-full sm:flex-1 h-10 sm:h-9 animate-bounce-in"
+//                             style={{animationDelay: '0.9s'}}
+//                             onClick={(e) => {
+//                               e.stopPropagation();
+//                               handleViewDetails(project);
+//                             }}
+//                           >
+//                             <FileText size={14} className="mr-1.5" />
+//                             PDF Details
+//                           </Button>
+//                           <Button
+//                             variant="outline"
+//                             size="sm"
+//                             className="border-primary/30 text-primary hover:bg-primary/10 w-full sm:flex-1 h-10 sm:h-9 text-sm animate-bounce-in"
+//                             style={{animationDelay: '1s'}}
+//                             onClick={(e) => {
+//                               e.stopPropagation();
+//                               const url =
+//                                 project.title === "Smart Pet Feeder"
+//                                   ? "https://github.com/Thomasjose-tech/Smart-Pet-Feeder"
+//                                   : "https://github.com/Thomasjose-tech";
+//                               window.open(url, "_blank");
+//                             }}
+//                           >
+//                             <Github size={14} className="mr-1.5" />
+//                             Source Code
+//                           </Button>
+//                         </div>
+//                       </div>
+//                     </Card>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+
+//         {/* Call to Action */}
+//         <div 
+//           className={`text-center mt-12 sm:mt-16 transition-all duration-700 ease-out ${
+//             isVisible 
+//               ? "opacity-100 translate-y-0" 
+//               : "opacity-0 translate-y-8"
+//           }`}
+//           style={{
+//             transitionDelay: isVisible ? "600ms" : "0ms"
+//           }}
+//         >
+//           <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 px-4">
+//             Interested in seeing more of my work or collaborating on a project?
+//           </p>
+//           <Button
+//             variant="default"
+//             size="lg"
+//             className="bg-primary hover:bg-primary/90 shadow-glow text-sm sm:text-base h-10 sm:h-11 px-6 sm:px-8"
+//             onClick={() =>
+//               document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })
+//             }
+//           >
+//             Let's Work Together
+//           </Button>
+//         </div>
+//       </div>
+
+//       <style jsx>{`
+//         /* Flip Card Styles */
+//         .flip-card {
+//           perspective: 1000px;
+//           width: 100%;
+//           cursor: pointer;
+//         }
+
+//         .flip-card-inner {
+//           position: relative;
+//           width: 100%;
+//           height: 100%;
+//           transition: transform 0.6s;
+//           transform-style: preserve-3d;
+//         }
+
+//         .flip-card-flipped {
+//           transform: rotateY(180deg);
+//         }
+
+//         .flip-card-front,
+//         .flip-card-back {
+//           position: absolute;
+//           width: 100%;
+//           height: 100%;
+//           -webkit-backface-visibility: hidden;
+//           backface-visibility: hidden;
+//           border-radius: 0.5rem;
+//         }
+
+//         .flip-card-back {
+//           transform: rotateY(180deg);
+//         }
+
+//         /* No-flip zone for buttons */
+//         .no-flip-zone {
+//           pointer-events: auto;
+//         }
+
+//         /* Animation Keyframes */
+//         @keyframes fadeIn {
+//           from {
+//             opacity: 0;
+//           }
+//           to {
+//             opacity: 1;
+//           }
+//         }
+
+//         @keyframes slideInLeft {
+//           from {
+//             opacity: 0;
+//             transform: translateX(-20px);
+//           }
+//           to {
+//             opacity: 1;
+//             transform: translateX(0);
+//           }
+//         }
+
+//         @keyframes slideInRight {
+//           from {
+//             opacity: 0;
+//             transform: translateX(20px);
+//           }
+//           to {
+//             opacity: 1;
+//             transform: translateX(0);
+//           }
+//         }
+
+//         @keyframes slideInUp {
+//           from {
+//             opacity: 0;
+//             transform: translateY(20px);
+//           }
+//           to {
+//             opacity: 1;
+//             transform: translateY(0);
+//           }
+//         }
+
+//         @keyframes scaleIn {
+//           from {
+//             opacity: 0;
+//             transform: scale(0.8);
+//           }
+//           to {
+//             opacity: 1;
+//             transform: scale(1);
+//           }
+//         }
+
+//         @keyframes bounceIn {
+//           0% {
+//             opacity: 0;
+//             transform: scale(0.3);
+//           }
+//           50% {
+//             transform: scale(1.05);
+//           }
+//           70% {
+//             transform: scale(0.9);
+//           }
+//           100% {
+//             opacity: 1;
+//             transform: scale(1);
+//           }
+//         }
+
+//         /* Animation Classes */
+//         .animate-fade-in {
+//           animation: fadeIn 0.6s ease-out forwards;
+//           opacity: 0;
+//         }
+
+//         .animate-slide-in-left {
+//           animation: slideInLeft 0.6s ease-out forwards;
+//           opacity: 0;
+//         }
+
+//         .animate-slide-in-right {
+//           animation: slideInRight 0.6s ease-out forwards;
+//           opacity: 0;
+//         }
+
+//         .animate-slide-in-up {
+//           animation: slideInUp 0.6s ease-out forwards;
+//           opacity: 0;
+//         }
+
+//         .animate-scale-in {
+//           animation: scaleIn 0.4s ease-out forwards;
+//           opacity: 0;
+//         }
+
+//         .animate-bounce-in {
+//           animation: bounceIn 0.6s ease-out forwards;
+//           opacity: 0;
+//         }
+
+//         /* Ensure smooth animations */
+//         .project-card-wrapper {
+//           transform: translateZ(0);
+//           will-change: opacity, transform;
+//         }
+
+//         /* Mobile responsiveness */
+//         @media (max-width: 640px) {
+//           .flip-card {
+//             min-height: 720px;
+//           }
+          
+//           .flip-card-inner {
+//             min-height: 720px;
+//           }
+//         }
+
+//         @media (min-width: 641px) and (max-width: 1023px) {
+//           .flip-card {
+//             min-height: 540px;
+//           }
+          
+//           .flip-card-inner {
+//             min-height: 540px;
+//           }
+//         }
+
+//         @media (min-width: 1024px) {
+//           .flip-card {
+//             min-height: 560px;
+//           }
+          
+//           .flip-card-inner {
+//             min-height: 560px;
+//           }
+//         }
+//       `}</style>
+//     </section>
+//   );
+// };
+
+// export default Projects;
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6283,9 +6922,12 @@ import { useEffect, useRef, useState } from "react";
 
 const Projects = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [projectsVisible, setProjectsVisible] = useState(false);
+  const [ctaVisible, setCtaVisible] = useState(false);
   const [flippedCards, setFlippedCards] = useState({});
   const sectionRef = useRef(null);
-  const projectRefs = useRef([]);
+  const projectsRef = useRef(null);
+  const ctaRef = useRef(null);
 
   const projects = [
     {
@@ -6327,71 +6969,89 @@ const Projects = () => {
     }
   ];
 
+  // Intersection Observer for header section
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const index = projectRefs.current.indexOf(entry.target);
-          if (entry.isIntersecting) {
-            // Element is visible
-            if (entry.target && index !== -1) {
-              setTimeout(() => {
-                entry.target.style.opacity = "1";
-                entry.target.style.transform = "translateY(0)";
-              }, index * 200);
-            }
-          } else {
-            // Element is not visible - reset animation
-            if (entry.target) {
-              entry.target.style.opacity = "0";
-              entry.target.style.transform = "translateY(32px)";
-            }
-          }
-        });
-      },
-      { 
-        threshold: 0.2,
-        rootMargin: "0px"
-      }
-    );
-
-    projectRefs.current.forEach((projectRef) => {
-      if (projectRef) {
-        observer.observe(projectRef);
-      }
-    });
-
-    return () => {
-      projectRefs.current.forEach((projectRef) => {
-        if (projectRef) {
-          observer.unobserve(projectRef);
-        }
-      });
-    };
-  }, []);
-
-  useEffect(() => {
-    const headerObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
+          } else {
+            setIsVisible(false);
           }
         });
       },
       { 
         threshold: 0.1,
-        rootMargin: "50px"
+        rootMargin: "0px"
       }
     );
 
     if (sectionRef.current) {
-      headerObserver.observe(sectionRef.current);
+      observer.observe(sectionRef.current);
     }
 
     return () => {
       if (sectionRef.current) {
-        headerObserver.unobserve(sectionRef.current);
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  // Intersection Observer for projects grid
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setProjectsVisible(true);
+          } else {
+            setProjectsVisible(false);
+          }
+        });
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: "0px"
+      }
+    );
+
+    if (projectsRef.current) {
+      observer.observe(projectsRef.current);
+    }
+
+    return () => {
+      if (projectsRef.current) {
+        observer.unobserve(projectsRef.current);
+      }
+    };
+  }, []);
+
+  // Intersection Observer for CTA section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setCtaVisible(true);
+          } else {
+            setCtaVisible(false);
+          }
+        });
+      },
+      { 
+        threshold: 0.1,
+        rootMargin: "0px"
+      }
+    );
+
+    if (ctaRef.current) {
+      observer.observe(ctaRef.current);
+    }
+
+    return () => {
+      if (ctaRef.current) {
+        observer.unobserve(ctaRef.current);
       }
     };
   }, []);
@@ -6430,12 +7090,6 @@ const Projects = () => {
     }));
   };
 
-  const addToProjectRefs = (el, index) => {
-    if (el && !projectRefs.current[index]) {
-      projectRefs.current[index] = el;
-    }
-  };
-
   return (
     <section 
       id="projects" 
@@ -6443,12 +7097,12 @@ const Projects = () => {
       className="py-12 sm:py-16 lg:py-20 px-0 sm:px-6 lg:px-8 bg-muted/30 overflow-hidden"
     >
       <div className="container mx-auto max-w-7xl px-3 sm:px-0">
-        {/* Header Section */}
+        {/* Header Section with fade in */}
         <div 
-          className={`text-center mb-12 sm:mb-16 transition-all duration-700 ease-out ${
+          className={`text-center mb-12 sm:mb-16 transition-all duration-1000 ${
             isVisible 
               ? "opacity-100 translate-y-0" 
-              : "opacity-0 translate-y-8"
+              : "opacity-0 -translate-y-10"
           }`}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6">Featured Projects</h2>
@@ -6461,13 +7115,24 @@ const Projects = () => {
           </p>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 w-full mx-auto px-0">
+        {/* Projects Grid with fade in */}
+        <div 
+          ref={projectsRef}
+          className={`grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 lg:gap-6 w-full mx-auto px-0 transition-all duration-1000 delay-200 ${
+            projectsVisible 
+              ? "opacity-100 translate-y-0" 
+              : "opacity-0 translate-y-10"
+          }`}
+        >
           {projects.map((project, index) => (
             <div
               key={project.title}
-              ref={(el) => addToProjectRefs(el, index)}
-              className="transition-all duration-700 ease-out opacity-0 translate-y-8 project-card-wrapper w-full px-3 sm:px-0"
+              className={`w-full px-3 sm:px-0 transition-all duration-700 ${
+                projectsVisible 
+                  ? "opacity-100 translate-y-0" 
+                  : "opacity-0 translate-y-10"
+              }`}
+              style={{ transitionDelay: projectsVisible ? `${index * 150}ms` : '0s' }}
             >
               {/* Flip Card Container */}
               <div 
@@ -6480,9 +7145,9 @@ const Projects = () => {
                   
                   {/* Front Side */}
                   <div className="flip-card-front">
-                    <Card className="h-full bg-gradient-card shadow-elegant border-2 border-primary/20 hover:border-primary/40 transition-all duration-300 flex flex-col">
-                      <CardHeader className="pb-3 animate-fade-in">
-                        <div className="flex flex-col sm:flex-row items-start justify-between gap-2 mb-3 animate-slide-in-left">
+                    <Card className="h-full bg-gradient-card shadow-elegant border-2 border-primary/20 hover:shadow-2xl hover:border-primary/40 transition-all duration-700 transform hover:scale-105 flex flex-col">
+                      <CardHeader className="pb-3">
+                        <div className="flex flex-col sm:flex-row items-start justify-between gap-2 mb-3">
                           <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20 text-xs sm:text-sm">
                             {project.type}
                           </Badge>
@@ -6491,24 +7156,23 @@ const Projects = () => {
                             {project.period}
                           </div>
                         </div>
-                        <CardTitle className="text-lg sm:text-xl mb-2 animate-slide-in-up" style={{animationDelay: '0.1s'}}>
+                        <CardTitle className="text-lg sm:text-xl mb-2">
                           {project.title}
                         </CardTitle>
-                        <CardDescription className="text-sm sm:text-base leading-relaxed animate-fade-in" style={{animationDelay: '0.2s'}}>
+                        <CardDescription className="text-sm sm:text-base leading-relaxed">
                           {project.description}
                         </CardDescription>
                       </CardHeader>
 
                       <CardContent className="space-y-3 sm:space-y-4 pb-4 flex-1 flex flex-col">
                         {/* Key Features */}
-                        <div className="flex-1 animate-fade-in" style={{animationDelay: '0.3s'}}>
-                          <h4 className="font-semibold mb-1.5 sm:mb-2 text-primary text-sm sm:text-base animate-slide-in-right">Key Features & Achievements</h4>
+                        <div className="flex-1">
+                          <h4 className="font-semibold mb-1.5 sm:mb-2 text-primary text-sm sm:text-base">Key Features & Achievements</h4>
                           <ul className="space-y-1.5">
                             {project.features.map((feature, featureIndex) => (
                               <li 
                                 key={featureIndex} 
-                                className="text-muted-foreground text-xs sm:text-sm leading-relaxed flex items-start animate-slide-in-left"
-                                style={{animationDelay: `${0.4 + featureIndex * 0.1}s`}}
+                                className="text-muted-foreground text-xs sm:text-sm leading-relaxed flex items-start"
                               >
                                 <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-primary rounded-full mr-2 sm:mr-3 mt-1.5 sm:mt-2 flex-shrink-0" />
                                 {feature}
@@ -6518,10 +7182,10 @@ const Projects = () => {
                         </div>
 
                         {/* Technologies */}
-                        <div className="animate-fade-in" style={{animationDelay: '0.7s'}}>
-                          <h4 className="font-semibold mb-1.5 sm:mb-2 text-primary text-sm sm:text-base animate-slide-in-right">Technologies Used</h4>
+                        <div>
+                          <h4 className="font-semibold mb-1.5 sm:mb-2 text-primary text-sm sm:text-base">Technologies Used</h4>
                           <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                            {project.technologies.map((tech, techIndex) => {
+                            {project.technologies.map((tech) => {
                               const getIcon = (techName) => {
                                 switch (techName.toLowerCase()) {
                                   case "iot": return "🌐";
@@ -6540,8 +7204,7 @@ const Projects = () => {
                                 <Badge
                                   key={tech}
                                   variant="secondary"
-                                  className="bg-primary/5 text-primary hover:bg-primary/10 transition-colors duration-300 flex items-center gap-1 text-xs animate-scale-in"
-                                  style={{animationDelay: `${0.8 + techIndex * 0.05}s`}}
+                                  className="bg-primary/5 text-primary hover:bg-primary/10 transition-colors duration-300 flex items-center gap-1 text-xs"
                                 >
                                   <span className="text-xs">{getIcon(tech)}</span>
                                   {tech}
@@ -6553,8 +7216,7 @@ const Projects = () => {
 
                         {/* Action Buttons */}
                         <div 
-                          className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-1 sm:pt-2 no-flip-zone animate-fade-in" 
-                          style={{animationDelay: '1s'}}
+                          className="flex flex-col sm:flex-row gap-2 sm:gap-3 pt-1 sm:pt-2 no-flip-zone" 
                           onMouseEnter={(e) => {
                             e.stopPropagation();
                             if (window.innerWidth >= 1024) {
@@ -6568,8 +7230,7 @@ const Projects = () => {
                           <Button
                             variant="default"
                             size="sm"
-                            className="bg-primary hover:bg-primary/90 text-xs h-9 sm:h-9 px-3 sm:px-4 w-full sm:w-auto animate-bounce-in"
-                            style={{animationDelay: '1.1s'}}
+                            className="bg-primary hover:bg-primary/90 text-xs h-9 sm:h-9 px-3 sm:px-4 w-full sm:w-auto"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleViewDetails(project);
@@ -6581,8 +7242,7 @@ const Projects = () => {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="border-primary/20 text-primary hover:bg-primary/10 w-full sm:flex-1 h-9 sm:h-9 animate-bounce-in"
-                            style={{animationDelay: '1.2s'}}
+                            className="border-primary/20 text-primary hover:bg-primary/10 w-full sm:flex-1 h-9 sm:h-9"
                             onClick={(e) => {
                               e.stopPropagation();
                               const url =
@@ -6605,11 +7265,11 @@ const Projects = () => {
                     <Card className="h-full bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/30 p-4 sm:p-5 flex flex-col">
                       <div className="h-full flex flex-col">
                         {/* Header */}
-                        <div className="text-center mb-4 sm:mb-5 animate-fade-in">
-                          <Badge variant="outline" className="bg-primary/20 text-primary border-primary/30 mb-2 text-xs sm:text-sm animate-scale-in">
+                        <div className="text-center mb-4 sm:mb-5">
+                          <Badge variant="outline" className="bg-primary/20 text-primary border-primary/30 mb-2 text-xs sm:text-sm">
                             Project Insights
                           </Badge>
-                          <h3 className="text-lg sm:text-xl font-bold text-primary animate-slide-in-up" style={{animationDelay: '0.1s'}}>
+                          <h3 className="text-lg sm:text-xl font-bold text-primary">
                             {project.title}
                           </h3>
                         </div>
@@ -6617,34 +7277,34 @@ const Projects = () => {
                         {/* Content */}
                         <div className="space-y-3 sm:space-y-3 flex-1">
                           {/* Challenges */}
-                          <div className="animate-fade-in" style={{animationDelay: '0.2s'}}>
-                            <h4 className="font-semibold mb-1.5 text-primary text-sm sm:text-base flex items-center gap-1.5 animate-slide-in-left">
+                          <div>
+                            <h4 className="font-semibold mb-1.5 text-primary text-sm sm:text-base flex items-center gap-1.5">
                               <span className="text-base">🚧</span>
                               Key Challenges
                             </h4>
-                            <p className="text-gray-900 dark:text-gray-900 text-sm sm:text-base leading-relaxed bg-white/95 p-2.5 sm:p-3 rounded-lg shadow-sm animate-slide-in-right" style={{animationDelay: '0.3s'}}>
+                            <p className="text-gray-900 dark:text-gray-900 text-sm sm:text-base leading-relaxed bg-white/95 p-2.5 sm:p-3 rounded-lg shadow-sm">
                               {project.backContent.challenges}
                             </p>
                           </div>
 
                           {/* Learnings */}
-                          <div className="animate-fade-in" style={{animationDelay: '0.4s'}}>
-                            <h4 className="font-semibold mb-1.5 text-primary text-sm sm:text-base flex items-center gap-1.5 animate-slide-in-left">
+                          <div>
+                            <h4 className="font-semibold mb-1.5 text-primary text-sm sm:text-base flex items-center gap-1.5">
                               <span className="text-base">📚</span>
                               Key Learnings
                             </h4>
-                            <p className="text-gray-900 dark:text-gray-900 text-sm sm:text-base leading-relaxed bg-white/95 p-2.5 sm:p-3 rounded-lg shadow-sm animate-slide-in-right" style={{animationDelay: '0.5s'}}>
+                            <p className="text-gray-900 dark:text-gray-900 text-sm sm:text-base leading-relaxed bg-white/95 p-2.5 sm:p-3 rounded-lg shadow-sm">
                               {project.backContent.learnings}
                             </p>
                           </div>
 
                           {/* Impact */}
-                          <div className="animate-fade-in" style={{animationDelay: '0.6s'}}>
-                            <h4 className="font-semibold mb-1.5 text-primary text-sm sm:text-base flex items-center gap-1.5 animate-slide-in-left">
+                          <div>
+                            <h4 className="font-semibold mb-1.5 text-primary text-sm sm:text-base flex items-center gap-1.5">
                               <span className="text-base">📈</span>
                               Project Impact
                             </h4>
-                            <p className="text-gray-900 dark:text-gray-900 text-sm sm:text-base leading-relaxed bg-white/95 p-2.5 sm:p-3 rounded-lg shadow-sm animate-slide-in-right" style={{animationDelay: '0.7s'}}>
+                            <p className="text-gray-900 dark:text-gray-900 text-sm sm:text-base leading-relaxed bg-white/95 p-2.5 sm:p-3 rounded-lg shadow-sm">
                               {project.backContent.impact}
                             </p>
                           </div>
@@ -6652,8 +7312,7 @@ const Projects = () => {
 
                         {/* Actions */}
                         <div 
-                          className="flex flex-col sm:flex-row gap-2.5 pt-2 sm:pt-2 mt-auto no-flip-zone animate-fade-in" 
-                          style={{animationDelay: '0.8s'}}
+                          className="flex flex-col sm:flex-row gap-2.5 pt-2 sm:pt-2 mt-auto no-flip-zone" 
                           onMouseEnter={(e) => {
                             e.stopPropagation();
                             if (window.innerWidth >= 1024) {
@@ -6667,8 +7326,7 @@ const Projects = () => {
                           <Button
                             variant="default"
                             size="sm"
-                            className="bg-primary hover:bg-primary/90 text-sm w-full sm:flex-1 h-10 sm:h-9 animate-bounce-in"
-                            style={{animationDelay: '0.9s'}}
+                            className="bg-primary hover:bg-primary/90 text-sm w-full sm:flex-1 h-10 sm:h-9"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleViewDetails(project);
@@ -6680,8 +7338,7 @@ const Projects = () => {
                           <Button
                             variant="outline"
                             size="sm"
-                            className="border-primary/30 text-primary hover:bg-primary/10 w-full sm:flex-1 h-10 sm:h-9 text-sm animate-bounce-in"
-                            style={{animationDelay: '1s'}}
+                            className="border-primary/30 text-primary hover:bg-primary/10 w-full sm:flex-1 h-10 sm:h-9 text-sm"
                             onClick={(e) => {
                               e.stopPropagation();
                               const url =
@@ -6704,16 +7361,14 @@ const Projects = () => {
           ))}
         </div>
 
-        {/* Call to Action */}
+        {/* Call to Action with fade in */}
         <div 
-          className={`text-center mt-12 sm:mt-16 transition-all duration-700 ease-out ${
-            isVisible 
+          ref={ctaRef}
+          className={`text-center mt-12 sm:mt-16 transition-all duration-1000 ${
+            ctaVisible 
               ? "opacity-100 translate-y-0" 
-              : "opacity-0 translate-y-8"
+              : "opacity-0 translate-y-10"
           }`}
-          style={{
-            transitionDelay: isVisible ? "600ms" : "0ms"
-          }}
         >
           <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 px-4">
             Interested in seeing more of my work or collaborating on a project?
@@ -6768,114 +7423,6 @@ const Projects = () => {
         /* No-flip zone for buttons */
         .no-flip-zone {
           pointer-events: auto;
-        }
-
-        /* Animation Keyframes */
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes slideInLeft {
-          from {
-            opacity: 0;
-            transform: translateX(-20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes slideInRight {
-          from {
-            opacity: 0;
-            transform: translateX(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        @keyframes slideInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes scaleIn {
-          from {
-            opacity: 0;
-            transform: scale(0.8);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        @keyframes bounceIn {
-          0% {
-            opacity: 0;
-            transform: scale(0.3);
-          }
-          50% {
-            transform: scale(1.05);
-          }
-          70% {
-            transform: scale(0.9);
-          }
-          100% {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
-
-        /* Animation Classes */
-        .animate-fade-in {
-          animation: fadeIn 0.6s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-slide-in-left {
-          animation: slideInLeft 0.6s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-slide-in-right {
-          animation: slideInRight 0.6s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-slide-in-up {
-          animation: slideInUp 0.6s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-scale-in {
-          animation: scaleIn 0.4s ease-out forwards;
-          opacity: 0;
-        }
-
-        .animate-bounce-in {
-          animation: bounceIn 0.6s ease-out forwards;
-          opacity: 0;
-        }
-
-        /* Ensure smooth animations */
-        .project-card-wrapper {
-          transform: translateZ(0);
-          will-change: opacity, transform;
         }
 
         /* Mobile responsiveness */
