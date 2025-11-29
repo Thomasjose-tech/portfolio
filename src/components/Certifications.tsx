@@ -4308,7 +4308,13 @@ if (typeof document !== 'undefined') {
 }
 
 // Optimized CountUp component
-const CountUp = memo(({ end, suffix = "", className }) => {
+interface CountUpProps {
+  end: number;
+  suffix?: string;
+  className?: string;
+}
+
+const CountUp = memo(({ end, suffix = "", className }: CountUpProps) => {
   const [count, setCount] = useState(0);
   
   useEffect(() => {
@@ -4344,8 +4350,36 @@ const CountUp = memo(({ end, suffix = "", className }) => {
   return <div className={className}>{count}{suffix}</div>;
 });
 
+// Define interfaces for type safety
+interface Certificate {
+  title: string;
+  issuer: string;
+  date: string;
+  type: string;
+  description: string;
+  location?: string;
+  skills?: string[];
+  image: string;
+  score?: string;
+  level?: string;
+  verifyUrl?: string;
+  details?: {
+    assignments: string;
+    exam: string;
+    totalCandidates: number;
+  };
+}
+
+interface CertificateCardProps {
+  cert: Certificate;
+  index: number;
+  isVisible: boolean;
+  getTypeColor: (type: string) => string;
+  downloadCertificate: (cert: Certificate) => void;
+}
+
 // Memoized Certificate Card component
-const CertificateCard = memo(({ cert, index, isVisible, getTypeColor, downloadCertificate }) => {
+const CertificateCard = memo(({ cert, index, isVisible, getTypeColor, downloadCertificate }: CertificateCardProps) => {
   return (
     <Card 
       className={`bg-white/80 dark:bg-gray-900/90 backdrop-blur-sm shadow-xl border border-white/50 dark:border-gray-800/50 hover:shadow-2xl hover:border-blue-200/50 dark:hover:border-blue-800/50 transition-all duration-500 hover:-translate-y-2 group h-full flex flex-col ${isVisible ? 'animate-fade-up' : 'opacity-0'}`}
@@ -4359,7 +4393,7 @@ const CertificateCard = memo(({ cert, index, isVisible, getTypeColor, downloadCe
           loading="lazy"
           className="w-full h-48 object-cover object-center group-hover:scale-105 transition-transform duration-500"
           onError={(e) => {
-            e.target.src = '/placeholder.svg';
+            (e.target as HTMLImageElement).src = '/placeholder.svg';
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
