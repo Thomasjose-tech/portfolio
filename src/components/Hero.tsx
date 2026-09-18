@@ -3714,9 +3714,256 @@
 // };
 
 // export default App;
+// import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
+// import { Code, Database, Globe, Wrench, Users, TestTube, ChevronLeft, ChevronRight, Target, CheckCircle, Zap, Server, Monitor, Brain, Clock, Send, Shield, User, Heart, Star, Briefcase, GraduationCap, Calendar, MapPin, Award, Cpu, Gauge, ExternalLink, ArrowDown, Download, FileText } from "lucide-react";
+// import { useState, useEffect, useRef } from "react";
+
+// // Add global styles to prevent horizontal scroll
+// const GlobalStyles = () => (
+//   <style jsx global>{`
+//     /* Prevent horizontal scroll on all pages */
+//     html, body {
+//       overflow-x: hidden;
+//       max-width: 100vw;
+//     }
+    
+//     #root {
+//       overflow-x: hidden;
+//       max-width: 100vw;
+//     }
+    
+//     * {
+//       box-sizing: border-box;
+//     }
+//   `}</style>
+// );
+
+// const Hero = () => {
+//   const [currentSlide, setCurrentSlide] = useState(0);
+//   const [isVisible, setIsVisible] = useState(false);
+//   const [isOpening, setIsOpening] = useState(true);
+
+//   const slides = [
+//     {
+//       title: "Crafting Digital Experiences",
+//       subtitle: "Web Developer & Creative Technologist",
+//       description: "Transforming ideas into beautiful, functional web applications with precision and passion."
+//     },
+//     {
+//       title: "Modern Web Solutions",
+//       subtitle: "React • Next.js • TypeScript",
+//       description: "Building responsive, scalable applications with cutting-edge technologies and best practices."
+//     },
+//     {
+//       title: "User-Centric Design",
+//       subtitle: "Performance Meets Aesthetics",
+//       description: "Creating seamless user experiences that blend functionality with elegant design principles."
+//     }
+//   ];
+
+//   useEffect(() => {
+//     const openingTimer = setTimeout(() => {
+//       setIsOpening(false);
+//     }, 800);
+
+//     const visibilityTimer = setTimeout(() => {
+//       setIsVisible(true);
+//     }, 1000);
+
+//     const interval = setInterval(() => {
+//       setCurrentSlide((prev) => (prev + 1) % slides.length);
+//     }, 4000);
+
+//     return () => {
+//       clearTimeout(openingTimer);
+//       clearTimeout(visibilityTimer);
+//       clearInterval(interval);
+//     };
+//   }, []);
+
+//   const handleDownloadResume = () => {
+//     const resumeUrl = '/assets/certificates/Resume.pdf';
+    
+//     const link = document.createElement('a');
+//     link.href = resumeUrl;
+//     link.download = 'Thomas_Jose_Resume.pdf';
+//     document.body.appendChild(link);
+//     link.click();
+//     document.body.removeChild(link);
+//   };
+
+//   return (
+//     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 dark:from-slate-900 dark:to-slate-800 relative overflow-hidden w-full">
+//       <GlobalStyles />
+      
+//       {/* Opening Curtain Animation */}
+//       <div className={`fixed inset-0 z-[100] pointer-events-none transition-all duration-500 ${
+//         isOpening ? 'opacity-100' : 'opacity-0'
+//       }`}>
+//         <div className={`absolute top-0 left-0 h-full w-1/2 bg-gradient-to-r from-slate-900 to-slate-800 transition-transform duration-800 ease-in-out ${
+//           isOpening ? 'translate-x-0' : '-translate-x-full'
+//         }`} />
+        
+//         <div className={`absolute top-0 right-0 h-full w-1/2 bg-gradient-to-l from-slate-900 to-slate-800 transition-transform duration-800 ease-in-out ${
+//           isOpening ? 'translate-x-0' : 'translate-x-full'
+//         }`} />
+        
+//         <div className={`absolute inset-0 flex items-center justify-center transition-all duration-400 ${
+//           isOpening ? 'opacity-100 scale-100' : 'opacity-0 scale-150'
+//         }`}>
+//           <div className="text-center">
+//             <div className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent mb-4 animate-pulse">
+//               TJ
+//             </div>
+//             <div className="text-xl md:text-2xl text-slate-300 font-light tracking-widest">
+//               Portfolio
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Animated Background - Contained */}
+//       <div className="absolute inset-0 overflow-hidden">
+//         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-full blur-3xl animate-pulse" 
+//              style={{ animationDuration: '6s' }} />
+//         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse" 
+//              style={{ animationDuration: '8s', animationDelay: '3s' }} />
+        
+//         {[...Array(15)].map((_, i) => (
+//           <div
+//             key={i}
+//             className="absolute w-1 h-1 bg-slate-400/20 dark:bg-blue-400/20 rounded-full"
+//             style={{
+//               left: `${Math.random() * 100}%`,
+//               top: `${Math.random() * 100}%`,
+//               animation: `float ${4 + Math.random() * 3}s ease-in-out infinite`,
+//               animationDelay: `${Math.random() * 3}s`
+//             }}
+//           />
+//         ))}
+//       </div>
+
+//       {/* Main Content - Fixed overflow */}
+//       <div className="relative z-10 flex items-center justify-center min-h-[80vh] px-4 sm:px-6 w-full overflow-hidden">
+//         <div className="max-w-4xl mx-auto text-center w-full">
+//           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+//             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-light text-slate-900 dark:text-white mb-6 tracking-tight">
+//               <span className="block font-bold bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900 dark:from-white dark:via-slate-200 dark:to-white bg-clip-text text-transparent">
+//                 Thomas Jose
+//               </span>
+//             </h1>
+
+//             <div className="relative min-h-[140px] sm:min-h-[120px] md:min-h-[128px] overflow-hidden w-full">
+//               {slides.map((slide, index) => (
+//                 <div
+//                   key={index}
+//                   className={`absolute inset-0 transition-all duration-1000 ${
+//                     index === currentSlide
+//                       ? 'opacity-100 transform translate-y-0'
+//                       : 'opacity-0 transform translate-y-full'
+//                   }`}
+//                 >
+//                   <h2 className="text-2xl sm:text-3xl md:text-4xl font-light text-slate-800 dark:text-slate-200 mb-2">
+//                     {slide.title}
+//                   </h2>
+//                   <h3 className="text-lg sm:text-xl text-blue-600 dark:text-blue-400 mb-4 font-mono">
+//                     {slide.subtitle}
+//                   </h3>
+//                   <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed px-4">
+//                     {slide.description}
+//                   </p>
+//                 </div>
+//               ))}
+//             </div>
+
+//             <div className="flex justify-center gap-2 mt-8 mb-12">
+//               {slides.map((_, index) => (
+//                 <button
+//                   key={index}
+//                   onClick={() => setCurrentSlide(index)}
+//                   className={`w-2 h-2 rounded-full transition-all duration-300 ${
+//                     index === currentSlide
+//                       ? 'bg-blue-600 dark:bg-blue-400 w-8'
+//                       : 'bg-slate-300 dark:bg-slate-600 hover:bg-slate-400 dark:hover:bg-slate-500'
+//                   }`}
+//                 />
+//               ))}
+//             </div>
+//           </div>
+
+//           <div className={`transition-all duration-1000 delay-300 ${
+//             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+//           }`}>
+//             {/* Email / phone / GitHub / LinkedIn removed —
+//                 they now live on the mobile radial dial and in the Contact section. */}
+
+//             {/* Fixed button container width */}
+//             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-12 px-4 max-w-3xl mx-auto">
+//               <Button 
+//                 size="lg"
+//                 className="relative overflow-hidden bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-700 border-2 border-blue-300 dark:border-blue-600 text-blue-600 dark:text-blue-300 hover:border-blue-400 px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 w-full sm:w-auto"
+//                 onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+//               >
+//                 <Code className="w-5 h-5 mr-2" />
+//                 View Projects
+//               </Button>
+//               <Button 
+//                 size="lg"
+//                 className="relative overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-slate-800 dark:to-slate-700 border-2 border-emerald-300 dark:border-emerald-600 text-emerald-600 dark:text-emerald-300 hover:border-emerald-400 px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 w-full sm:w-auto"
+//                 onClick={handleDownloadResume}
+//               >
+//                 <Download className="w-5 h-5 mr-2" />
+//                 Download Resume
+//               </Button>
+//               <Button 
+//                 size="lg"
+//                 className="relative overflow-hidden bg-gradient-to-r from-purple-50 to-pink-50 dark:from-slate-800 dark:to-slate-700 border-2 border-purple-300 dark:border-purple-600 text-purple-600 dark:text-purple-300 hover:border-purple-400 px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 w-full sm:w-auto"
+//                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+//               >
+//                 Let's Connect
+//               </Button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className={`absolute bottom-8 left-1/2 transform -translate-x-1/2 transition-all duration-1000 delay-1000 ${
+//         isVisible ? 'opacity-100 translate-y-0' : 'opacity-20 translate-y-10'
+//       }`}>
+//         <div className="flex flex-col items-center gap-2 text-slate-400 cursor-pointer"
+//              onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })}>
+//           <span className="text-xs font-mono tracking-wider">SCROLL</span>
+//           <div className="animate-bounce">
+//             <ArrowDown size={20} />
+//           </div>
+//         </div>
+//       </div>
+
+//       <style jsx>{`
+//         @keyframes float {
+//           0%, 100% { transform: translateY(0px) rotate(0deg); }
+//           50% { transform: translateY(-20px) rotate(180deg); }
+//         }
+//       `}</style>
+//     </div>
+//   );
+// };
+
+// const App = () => {
+//   return (
+//     <div className="w-full overflow-x-hidden">
+//       <GlobalStyles />
+//       <Hero />
+      
+//     </div>
+//   );
+// };
+
+// export default App;
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Code, Database, Globe, Wrench, Users, TestTube, ChevronLeft, ChevronRight, Target, CheckCircle, Zap, Server, Monitor, Brain, Clock, Send, Shield, User, Heart, Star, Briefcase, GraduationCap, Calendar, MapPin, Award, Cpu, Gauge, ExternalLink, ArrowDown, Download, FileText } from "lucide-react";
+import { Code, Database, Globe, Wrench, Users, TestTube, ChevronLeft, ChevronRight, Target, CheckCircle, Zap, Server, Monitor, Brain, Clock, Send, Shield, User, Heart, Star, Briefcase, GraduationCap, Calendar, MapPin, Award, Cpu, Gauge, ExternalLink, ArrowDown, Download, FileText, Mail, Phone } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
 // Add global styles to prevent horizontal scroll
@@ -3895,8 +4142,25 @@ const Hero = () => {
           <div className={`transition-all duration-1000 delay-300 ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
           }`}>
-            {/* Email / phone / GitHub / LinkedIn removed —
-                they now live on the mobile radial dial and in the Contact section. */}
+            {/* Email / phone — desktop & laptop only (mobile keeps this out of
+                the hero; those live on the mobile radial dial and in the
+                Contact section instead). */}
+            <div className="hidden sm:flex flex-wrap items-center justify-center gap-4 mb-8">
+              <a
+                href="mailto:thomasjose22@gmail.com"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm text-slate-700 dark:text-slate-200 text-sm font-medium hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 hover:scale-105"
+              >
+                <Mail className="w-4 h-4" />
+                thomasjose22@gmail.com
+              </a>
+              <a
+                href="tel:+918304909105"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border-2 border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm text-slate-700 dark:text-slate-200 text-sm font-medium hover:border-emerald-400 dark:hover:border-emerald-500 hover:text-emerald-600 dark:hover:text-emerald-400 transition-all duration-300 hover:scale-105"
+              >
+                <Phone className="w-4 h-4" />
+                +91 8304909105
+              </a>
+            </div>
 
             {/* Fixed button container width */}
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-12 px-4 max-w-3xl mx-auto">
