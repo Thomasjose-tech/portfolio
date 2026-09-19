@@ -12901,6 +12901,609 @@
 // };
 
 // export default Projects;
+// import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
+// import { CardDescription, CardTitle } from "@/components/ui/card";
+// import { Calendar, Github, FileText, Cpu, Code, ChevronLeft, ChevronRight, ExternalLink, LayoutGrid } from "lucide-react";
+// import { useEffect, useRef, useState, useCallback } from "react";
+
+// const Projects = () => {
+//   const [isVisible, setIsVisible]           = useState(false);
+//   const [activeIndex, setActiveIndex]       = useState(0);
+//   const [activeCategory, setActiveCategory] = useState("all");
+//   const [isAnimating, setIsAnimating]       = useState(false);
+//   const [slideDir, setSlideDir]             = useState<'left'|'right'|null>(null);
+//   const [isDark, setIsDark]                 = useState(false);
+//   const [isMobile, setIsMobile]             = useState(false);
+//   const [hoveredFilter, setHoveredFilter]   = useState<string|null>(null);
+//   const sectionRef  = useRef<HTMLElement>(null);
+//   const touchStartX = useRef<number|null>(null);
+//   const touchStartY = useRef<number|null>(null);
+
+//   /* ── Dark mode ── */
+//   useEffect(() => {
+//     const check = () =>
+//       setIsDark(
+//         document.documentElement.classList.contains("dark") ||
+//         document.body.classList.contains("dark") ||
+//         window.matchMedia("(prefers-color-scheme: dark)").matches
+//       );
+//     check();
+//     const mo = new MutationObserver(check);
+//     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+//     mo.observe(document.body,            { attributes: true, attributeFilter: ["class"] });
+//     const mq = window.matchMedia("(prefers-color-scheme: dark)");
+//     mq.addEventListener("change", check);
+//     return () => { mo.disconnect(); mq.removeEventListener("change", check); };
+//   }, []);
+
+//   /* ── Mobile detection ── */
+//   useEffect(() => {
+//     const check = () => setIsMobile(window.innerWidth < 640);
+//     check();
+//     window.addEventListener("resize", check);
+//     return () => window.removeEventListener("resize", check);
+//   }, []);
+
+//   const projects = [
+//     {
+//       title: "Smart Pet Feeder",
+//       period: "Aug 2023 – Jan 2024",
+//       description: "A comprehensive smart feeding solution for pets with automated scheduling and remote monitoring capabilities.",
+//       features: [
+//         "Smart feeder system dispensing food at scheduled intervals",
+//         "Web dashboard for real-time remote monitoring and control",
+//         "Consistent feeding cycles enhancing pet owner convenience"
+//       ],
+//       technologies: ["IoT", "Web Dashboard", "Real-time Monitoring", "Automation"],
+//       type: "Hardware & Software",
+//       category: "hardware",
+//       pdfUrl: "/assets/certificates/thomas.pdf",
+//       githubUrl: "https://github.com/Thomasjose-tech/Smart-Pet-Feeder",
+//       backContent: {
+//         challenges: "Designing reliable dispensing mechanism and consistent connectivity for remote monitoring.",
+//         learnings: "IoT integration, real-time data processing, and hardware-software communication protocols.",
+//         impact: "Reduced feeding inconsistencies by 85%; peace of mind through remote monitoring."
+//       },
+//       accent: "#6366f1", emoji: "🐾"
+//     },
+//     {
+//       title: "Multipurpose Agriculture Robot",
+//       period: "Mar 2024 – Feb 2025",
+//       description: "An intelligent robotic system designed to automate multiple agricultural tasks and improve farming efficiency.",
+//       features: [
+//         "Robotic system for soil monitoring, seed sowing, and spraying",
+//         "Sensors and actuators automating processes to reduce manual labor",
+//         "Remote operation reducing need for constant human supervision"
+//       ],
+//       technologies: ["Robotics", "IoT Sensors", "Automation", "Embedded Systems", "Remote Control"],
+//       type: "Analytics & IoT",
+//       category: "hardware",
+//       pdfUrl: "/assets/certificates/grp11.pdf",
+//       githubUrl: "https://github.com/Thomasjose-tech",
+//       backContent: {
+//         challenges: "Integrating multiple agricultural functions while maintaining cost-effectiveness.",
+//         learnings: "Advanced robotics, sensor fusion techniques, and precision agriculture methodologies.",
+//         impact: "Increased efficiency by 60% and reduced labor costs by 45%."
+//       },
+//       accent: "#10b981", emoji: "🤖"
+//     },
+//     {
+//       title: "Cross-Language Craft",
+//       period: "2024",
+//       description: "A sophisticated real-time language translation application enabling seamless communication across multiple languages.",
+//       features: [
+//         "Real-time translation supporting multiple languages",
+//         "Intuitive UI for instant language conversion",
+//         "Responsive interface for desktop and mobile devices"
+//       ],
+//       technologies: ["React", "Translation API", "Responsive Design", "Real-time Processing"],
+//       type: "Frontend Development",
+//       category: "frontend",
+//       liveUrl: "https://cross-language-craft-26011.vercel.app/",
+//       backContent: {
+//         challenges: "Accurate translations with fast response times across diverse language character sets.",
+//         learnings: "API integration, state management in React, fluid UX for real-time apps.",
+//         impact: "Seamless cross-language communication with an intuitive interface."
+//       },
+//       accent: "#f59e0b", emoji: "🌍"
+//     },
+//     {
+//       title: "Financuz Nexus",
+//       period: "2024",
+//       description: "A comprehensive financial management platform providing tools for budget tracking, expense analysis, and planning.",
+//       features: [
+//         "Interactive dashboard for financial data visualization",
+//         "Expense tracking and smart categorization system",
+//         "Budget planning and deep analysis tools"
+//       ],
+//       technologies: ["React", "Data Visualization", "UI/UX Design", "State Management"],
+//       type: "Frontend Development",
+//       category: "frontend",
+//       liveUrl: "https://financuz-nexus-01.vercel.app/",
+//       backContent: {
+//         challenges: "Simplifying complex financial data while maintaining security and performance.",
+//         learnings: "Advanced React patterns, data visualization, user-centric financial UX design.",
+//         impact: "Simplified personal finance with clear visualizations and easy tracking."
+//       },
+//       accent: "#ec4899", emoji: "💰"
+//     },
+//     {
+//       title: "Chronos – Luxury Timepieces",
+//       period: "2024",
+//       description: "An elegant e-commerce platform showcasing premium luxury watches with sophisticated design and seamless shopping.",
+//       features: [
+//         "Premium product showcase with high-quality imagery",
+//         "Smooth animations and interactive UI elements",
+//         "Intuitive navigation and product filtering system"
+//       ],
+//       technologies: ["React", "E-commerce UI", "Animation", "Responsive Design"],
+//       type: "Frontend Development",
+//       category: "frontend",
+//       liveUrl: "https://chronos-luxury-timepieces.vercel.app/",
+//       backContent: {
+//         challenges: "Balancing aesthetic appeal with performance for a luxury brand feel.",
+//         learnings: "Advanced CSS techniques, animation libraries, high-end e-commerce UX.",
+//         impact: "Elevated luxury shopping experience with elegant design and smooth interactions."
+//       },
+//       accent: "#8b5cf6", emoji: "⌚"
+//     }
+//   ];
+
+//   const filteredProjects = activeCategory === "all"
+//     ? projects
+//     : projects.filter(p => p.category === activeCategory);
+
+//   useEffect(() => { setActiveIndex(0); }, [activeCategory]);
+
+//   useEffect(() => {
+//     const obs = new IntersectionObserver(
+//       entries => entries.forEach(e => setIsVisible(e.isIntersecting)),
+//       { threshold: 0.05 }
+//     );
+//     if (sectionRef.current) obs.observe(sectionRef.current);
+//     return () => { if (sectionRef.current) obs.unobserve(sectionRef.current); };
+//   }, []);
+
+//   const handleNav = useCallback((dir: 'left'|'right') => {
+//     if (isAnimating) return;
+//     setIsAnimating(true);
+//     setSlideDir(dir);
+//     setTimeout(() => {
+//       setActiveIndex(prev =>
+//         dir === 'right'
+//           ? (prev + 1) % filteredProjects.length
+//           : (prev - 1 + filteredProjects.length) % filteredProjects.length
+//       );
+//       setSlideDir(null);
+//       setIsAnimating(false);
+//     }, 280);
+//   }, [isAnimating, filteredProjects.length]);
+
+//   const onTouchStart = (e: React.TouchEvent) => {
+//     touchStartX.current = e.touches[0].clientX;
+//     touchStartY.current = e.touches[0].clientY;
+//   };
+//   const onTouchEnd = (e: React.TouchEvent) => {
+//     if (touchStartX.current === null) return;
+//     const dx = e.changedTouches[0].clientX - touchStartX.current!;
+//     const dy = e.changedTouches[0].clientY - touchStartY.current!;
+//     if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) handleNav(dx < 0 ? 'right' : 'left');
+//     touchStartX.current = null;
+//   };
+
+//   /* ── Desktop stacked card styles ── */
+//   const getDesktopCardStyle = (index: number) => {
+//     const total = filteredProjects.length;
+//     const diff  = (index - activeIndex + total) % total;
+//     if (diff === 0) return { zIndex: 30, transform: 'translateX(0) translateY(0) scale(1)',              opacity: 1, pointerEvents: 'auto'  as const, visibility: 'visible' as const };
+//     if (diff === 1 || diff === total - 1) {
+//       const s = diff === 1 ? 1 : -1;
+//       return   { zIndex: 20, transform: `translateX(${s*22}px) translateY(22px) scale(0.96)`,            opacity: 1, pointerEvents: 'none'  as const, visibility: 'visible' as const };
+//     }
+//     if (diff === 2 || diff === total - 2) {
+//       const s = diff === 2 ? 1 : -1;
+//       return   { zIndex: 10, transform: `translateX(${s*38}px) translateY(42px) scale(0.90)`,            opacity: 1, pointerEvents: 'none'  as const, visibility: 'visible' as const };
+//     }
+//     return     { zIndex:  0, transform: 'translateX(0) translateY(48px) scale(0.83)',                    opacity: 0, pointerEvents: 'none'  as const, visibility: 'hidden'  as const };
+//   };
+
+//   const getDesktopOverlay = (index: number) => {
+//     const total = filteredProjects.length;
+//     const diff  = (index - activeIndex + total) % total;
+//     if (diff === 0) return null;
+//     if (isDark) return diff === 1 || diff === total - 1 ? 'rgba(10,10,18,0.62)' : 'rgba(10,10,18,0.82)';
+//     return diff === 1 || diff === total - 1 ? 'rgba(246,246,250,0.68)' : 'rgba(246,246,250,0.85)';
+//   };
+
+//   const techIcons: Record<string, string> = {
+//     "iot":"🌐","web dashboard":"📊","real-time monitoring":"📡","automation":"⚡",
+//     "robotics":"🤖","iot sensors":"📱","embedded systems":"🔧","remote control":"📡",
+//     "react":"⚛️","translation api":"🌍","responsive design":"📱","real-time processing":"⚡",
+//     "data visualization":"📊","ui/ux design":"🎨","state management":"🔄",
+//     "e-commerce ui":"🛍️","animation":"✨"
+//   };
+
+//   const cardBg    = isDark ? '#13131f' : '#ffffff';
+//   const getBorder = (active: boolean, accent: string) =>
+//     active ? `2px solid ${accent}55` : isDark ? '2px solid rgba(255,255,255,0.08)' : '2px solid rgba(0,0,0,0.08)';
+//   const getShadow = (active: boolean, accent: string) =>
+//     active
+//       ? `0 20px 50px -10px ${accent}35, 0 0 0 1px ${accent}18`
+//       : isDark ? '0 6px 28px rgba(0,0,0,0.65)' : '0 4px 20px rgba(0,0,0,0.09)';
+//   const dotInactive = isDark ? 'rgba(255,255,255,0.22)' : 'rgba(0,0,0,0.18)';
+//   const arrowCls    = isDark
+//     ? 'bg-white/10 border-white/20 text-white hover:bg-primary hover:border-primary hover:text-white'
+//     : 'bg-black/5 border-black/10 text-gray-600 hover:bg-primary hover:border-primary hover:text-white';
+
+//   const filterTabs = [
+//     { key: 'all',      label: 'All Projects', Icon: LayoutGrid },
+//     { key: 'hardware', label: 'Hardware',     Icon: Cpu        },
+//     { key: 'frontend', label: 'Frontend',     Icon: Code       },
+//   ];
+
+//   /* ── Shared card body ── */
+//   const CardBody = ({ project, isActive }: { project: typeof projects[0]; isActive: boolean }) => (
+//     <div className="flex flex-col p-4 sm:p-5 lg:p-7 h-full">
+
+//       {/* Header */}
+//       <div className="flex items-start justify-between mb-3 gap-2">
+//         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+//           <div
+//             className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center text-xl sm:text-2xl flex-shrink-0"
+//             style={{ background: `${project.accent}1a`, border: `1px solid ${project.accent}40` }}
+//           >
+//             {project.emoji}
+//           </div>
+//           <div className="min-w-0">
+//             <Badge className="text-xs mb-0.5 border-none px-1.5 py-0.5" style={{ background: `${project.accent}1a`, color: project.accent }}>
+//               {project.type}
+//             </Badge>
+//             <CardTitle className="text-base sm:text-lg lg:text-xl leading-tight text-foreground">{project.title}</CardTitle>
+//           </div>
+//         </div>
+//         <div className="flex items-center text-muted-foreground text-xs flex-shrink-0 mt-1 whitespace-nowrap">
+//           <Calendar size={11} className="mr-1" />{project.period}
+//         </div>
+//       </div>
+
+//       {/* Description */}
+//       <CardDescription className="text-xs sm:text-sm leading-relaxed mb-3">{project.description}</CardDescription>
+
+//       {/* Key Features */}
+//       <div className="mb-3">
+//         <h4 className="font-semibold mb-1.5 text-xs sm:text-sm" style={{ color: project.accent }}>Key Features</h4>
+//         <ul className="space-y-1">
+//           {project.features.map((f, fi) => (
+//             <li key={fi} className="text-muted-foreground text-xs sm:text-sm leading-relaxed flex items-start">
+//               <span className="w-1.5 h-1.5 rounded-full mr-2 mt-1.5 flex-shrink-0" style={{ background: project.accent }} />
+//               {f}
+//             </li>
+//           ))}
+//         </ul>
+//       </div>
+
+//       {/* Technologies */}
+//       <div className="mb-3">
+//         <h4 className="font-semibold mb-1.5 text-xs sm:text-sm" style={{ color: project.accent }}>Technologies</h4>
+//         <div className="flex flex-wrap gap-1">
+//           {project.technologies.slice(0, isMobile ? 3 : project.technologies.length).map(tech => (
+//             <Badge key={tech} className="text-xs px-1.5 py-0.5 border-none" style={{ background: `${project.accent}18`, color: project.accent }}>
+//               {techIcons[tech.toLowerCase()] || '💻'} {tech}
+//             </Badge>
+//           ))}
+//           {isMobile && project.technologies.length > 3 && (
+//             <Badge className="text-xs px-1.5 py-0.5 border-none" style={{ background: `${project.accent}10`, color: project.accent }}>
+//               +{project.technologies.length - 3} more
+//             </Badge>
+//           )}
+//         </div>
+//       </div>
+
+//       {/* Insights */}
+//       {isActive && (
+//         <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3 text-xs">
+//           {[
+//             { label: '🚧 Challenge', value: project.backContent.challenges },
+//             { label: '📚 Learning',  value: project.backContent.learnings  },
+//             { label: '📈 Impact',    value: project.backContent.impact     },
+//           ].map(({ label, value }) => (
+//             <div key={label} className="rounded-lg p-2.5" style={{ background: isDark ? `${project.accent}12` : `${project.accent}0d`, border: `1px solid ${project.accent}25` }}>
+//               <div className="font-semibold mb-1" style={{ color: project.accent }}>{label}</div>
+//               <div className="text-muted-foreground leading-relaxed">{value}</div>
+//             </div>
+//           ))}
+//         </div>
+//       )}
+
+//       {/* Buttons */}
+//       <div className="flex gap-2 mt-auto pt-1">
+//         <Button
+//           size="sm"
+//           className="flex-1 h-9 text-xs font-semibold shadow-sm transition-all duration-300 active:scale-95"
+//           style={{ background: project.accent, color: '#fff', border: 'none' }}
+//           onClick={() => {
+//             if (project.liveUrl) window.open(project.liveUrl, "_blank");
+//             else if (project.pdfUrl) window.open(project.pdfUrl, "_blank");
+//           }}
+//         >
+//           {project.liveUrl
+//             ? <><ExternalLink size={13} className="mr-1.5" />View Live</>
+//             : <><FileText size={13} className="mr-1.5" />View Details</>}
+//         </Button>
+//         {project.githubUrl && (
+//           <Button
+//             variant="outline" size="sm"
+//             className="flex-1 h-9 text-xs transition-all duration-300 active:scale-95"
+//             style={{ borderColor: `${project.accent}50`, color: project.accent }}
+//             onClick={() => window.open(project.githubUrl, "_blank")}
+//           >
+//             <Github size={13} className="mr-1.5" />Code
+//           </Button>
+//         )}
+//       </div>
+//     </div>
+//   );
+
+//   const activeProject = filteredProjects[activeIndex];
+
+//   return (
+//     <section id="projects" ref={sectionRef} className="py-12 sm:py-20 lg:py-28 overflow-hidden bg-background">
+//       <div className="container mx-auto max-w-6xl">
+
+//         {/* Header */}
+//         <div className={`text-center mb-8 sm:mb-14 px-4 sm:px-6 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}`}>
+//           <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-foreground">Featured Projects</h2>
+//           <div className="h-1 w-16 sm:w-24 bg-primary mx-auto mb-4 sm:mb-6 rounded-full" />
+//           <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+//             Innovative solutions combining hardware and software to solve real-world problems
+//           </p>
+//         </div>
+
+//         {/* ── Filter Pills ──
+//             Mobile  : icon only; tooltip label floats BELOW on hover/tap
+//             Desktop : icon + full label
+//         ── */}
+//         <div className={`flex justify-center mb-8 sm:mb-14 px-4 sm:px-6 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}`}>
+//           {/* Extra bottom padding on mobile gives room for tooltip */}
+//           <div className="inline-flex rounded-lg border border-primary/20 bg-muted/50 p-1 gap-1" style={{ paddingBottom: isMobile ? '4px' : undefined }}>
+//             {filterTabs.map(({ key, label, Icon }) => {
+//               const isAct  = activeCategory === key;
+//               const count  = key === 'all' ? projects.length : projects.filter(p => p.category === key).length;
+//               const accent = activeProject?.accent ?? '#6366f1';
+//               return (
+//                 <div key={key} className="relative flex flex-col items-center">
+//                   <button
+//                     onClick={() => setActiveCategory(key)}
+//                     onMouseEnter={() => setHoveredFilter(key)}
+//                     onMouseLeave={() => setHoveredFilter(null)}
+//                     onFocus={() => setHoveredFilter(key)}
+//                     onBlur={() => setHoveredFilter(null)}
+//                     // On mobile: tap toggles tooltip via hoveredFilter (touch events don't fire hover)
+//                     onTouchStart={() => setHoveredFilter(hoveredFilter === key ? null : key)}
+//                     className={`flex items-center justify-center gap-1.5 rounded-md h-9 transition-all duration-300 ${
+//                       isAct
+//                         ? 'bg-primary text-primary-foreground shadow-sm'
+//                         : isDark ? 'text-muted-foreground hover:bg-white/10' : 'text-muted-foreground hover:bg-black/5'
+//                     }`}
+//                     /* narrow on mobile (icon+badge only), wider on desktop */
+//                     style={{ padding: isMobile ? '0 10px' : '0 14px' }}
+//                     aria-label={label}
+//                   >
+//                     <Icon size={15} className="flex-shrink-0" />
+//                     {/* Label only on desktop */}
+//                     {!isMobile && <span className="text-sm font-medium">{label}</span>}
+//                     {/* Count badge */}
+//                     <span
+//                       className="text-xs min-w-[18px] h-4 flex items-center justify-center px-1 rounded-full"
+//                       style={{
+//                         background: isAct ? 'rgba(255,255,255,0.25)' : `${accent}22`,
+//                         color:      isAct ? '#fff' : accent,
+//                       }}
+//                     >
+//                       {count}
+//                     </span>
+//                   </button>
+
+//                   {/* Tooltip — mobile only */}
+//                   {isMobile && (
+//                     <span
+//                       aria-hidden="true"
+//                       className="pointer-events-none absolute text-xs font-medium whitespace-nowrap rounded-md px-2 py-0.5 z-50 transition-all duration-200"
+//                       style={{
+//                         top:        '100%',
+//                         left:       '50%',
+//                         marginTop:  '4px',
+//                         transform:  `translateX(-50%) translateY(${hoveredFilter === key ? '0px' : '-4px'})`,
+//                         opacity:    hoveredFilter === key ? 1 : 0,
+//                         background: isDark ? 'rgba(20,20,36,0.97)' : 'rgba(255,255,255,0.97)',
+//                         color:      isDark ? '#e2e2f0' : '#222',
+//                         boxShadow:  '0 2px 10px rgba(0,0,0,0.18)',
+//                         border:     `1px solid ${accent}33`,
+//                       }}
+//                     >
+//                       {label}
+//                     </span>
+//                   )}
+//                 </div>
+//               );
+//             })}
+//           </div>
+//         </div>
+
+//       </div>{/* /container — carousel intentionally breaks out for mobile full-bleed */}
+
+//       {/* ── Carousel ── */}
+//       <div className={`transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+
+//         {/* ═══════════════ MOBILE ═══════════════
+//             One card at a time, height = auto (no fixed height = no cut-off).
+//             Slide animation via opacity+translateX on the wrapper.
+//         ════════════════════════════════════════ */}
+//         {isMobile && (
+//           <div className="relative w-full" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+
+//             {/* Left arrow — floats over top-left corner of card */}
+//             <button
+//               onClick={() => handleNav('left')}
+//               disabled={isAnimating}
+//               aria-label="Previous"
+//               className={`absolute left-2.5 top-8 z-20 flex items-center justify-center rounded-full border backdrop-blur-md shadow-lg transition-all duration-300 active:scale-90 disabled:opacity-30 ${arrowCls}`}
+//               style={{ width: 34, height: 34 }}
+//             >
+//               <ChevronLeft size={17} />
+//             </button>
+
+//             {/* Card wrapper — full viewport width, height = content */}
+//             <div
+//               style={{
+//                 transition: 'opacity 0.28s ease, transform 0.28s ease',
+//                 opacity:    slideDir ? 0.55 : 1,
+//                 transform:  slideDir === 'right' ? 'translateX(-8px)' : slideDir === 'left' ? 'translateX(8px)' : 'translateX(0)',
+//               }}
+//             >
+//               {activeProject && (
+//                 <div
+//                   style={{
+//                     background:   cardBg,
+//                     border:       getBorder(true, activeProject.accent),
+//                     boxShadow:    getShadow(true, activeProject.accent),
+//                     borderRadius: 0,  /* full bleed on mobile */
+//                   }}
+//                 >
+//                   {/* Top accent stripe */}
+//                   <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${activeProject.accent}, ${activeProject.accent}66)` }} />
+//                   <CardBody project={activeProject} isActive={true} />
+//                 </div>
+//               )}
+//             </div>
+
+//             {/* Right arrow */}
+//             <button
+//               onClick={() => handleNav('right')}
+//               disabled={isAnimating}
+//               aria-label="Next"
+//               className={`absolute right-2.5 top-8 z-20 flex items-center justify-center rounded-full border backdrop-blur-md shadow-lg transition-all duration-300 active:scale-90 disabled:opacity-30 ${arrowCls}`}
+//               style={{ width: 34, height: 34 }}
+//             >
+//               <ChevronRight size={17} />
+//             </button>
+//           </div>
+//         )}
+
+//         {/* ═══════════════ DESKTOP ═══════════════
+//             Stacked card carousel — fixed height container is fine
+//             because content fits within 600px on desktop.
+//         ════════════════════════════════════════ */}
+//         {!isMobile && (
+//           <div
+//             className="relative container mx-auto max-w-6xl"
+//             style={{ paddingLeft: '56px', paddingRight: '56px' }}
+//           >
+//             <button
+//               onClick={() => handleNav('left')}
+//               disabled={isAnimating}
+//               aria-label="Previous project"
+//               className={`absolute z-50 flex items-center justify-center rounded-full border backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110 active:scale-90 disabled:opacity-35 disabled:cursor-not-allowed ${arrowCls}`}
+//               style={{ width: 44, height: 44, left: 0, top: '50%', transform: 'translateY(-50%)' }}
+//             >
+//               <ChevronLeft size={22} />
+//             </button>
+
+//             <div className="relative w-full" style={{ minHeight: '610px', isolation: 'isolate', overflow: 'hidden' }}>
+//               {filteredProjects.map((project, index) => {
+//                 const style   = getDesktopCardStyle(index);
+//                 const overlay = getDesktopOverlay(index);
+//                 const isAct   = index === activeIndex;
+//                 return (
+//                   <div key={project.title} className="absolute inset-0 transition-all duration-500 ease-out" style={{ ...style, transformOrigin: 'center bottom' }}>
+//                     {overlay && (
+//                       <div className="absolute inset-0 z-10 pointer-events-none" style={{ background: overlay, borderRadius: '1rem' }} />
+//                     )}
+//                     <div
+//                       className="h-full overflow-hidden flex flex-col relative"
+//                       style={{
+//                         background:   cardBg,
+//                         border:       getBorder(isAct, project.accent),
+//                         boxShadow:    getShadow(isAct, project.accent),
+//                         minHeight:    '600px',
+//                         borderRadius: '16px',
+//                       }}
+//                     >
+//                       <div className="h-1.5 w-full flex-shrink-0" style={{ background: `linear-gradient(90deg, ${project.accent}, ${project.accent}66)` }} />
+//                       <CardBody project={project} isActive={isAct} />
+//                     </div>
+//                   </div>
+//                 );
+//               })}
+//             </div>
+
+//             <button
+//               onClick={() => handleNav('right')}
+//               disabled={isAnimating}
+//               aria-label="Next project"
+//               className={`absolute z-50 flex items-center justify-center rounded-full border backdrop-blur-md shadow-lg transition-all duration-300 hover:scale-110 active:scale-90 disabled:opacity-35 disabled:cursor-not-allowed ${arrowCls}`}
+//               style={{ width: 44, height: 44, right: 0, top: '50%', transform: 'translateY(-50%)' }}
+//             >
+//               <ChevronRight size={22} />
+//             </button>
+//           </div>
+//         )}
+
+//         {/* Swipe hint */}
+//         {isMobile && (
+//           <p className="text-center text-xs text-muted-foreground mt-4 opacity-55 px-4">
+//             ← Swipe or use arrows to navigate →
+//           </p>
+//         )}
+
+//         {/* Dot indicators */}
+//         <div className="flex justify-center gap-2 sm:gap-2.5 mt-6 sm:mt-10 px-4">
+//           {filteredProjects.map((project, index) => (
+//             <button
+//               key={index}
+//               onClick={() => {
+//                 if (!isAnimating && index !== activeIndex) {
+//                   setIsAnimating(true);
+//                   setTimeout(() => { setActiveIndex(index); setIsAnimating(false); }, 280);
+//                 }
+//               }}
+//               className="transition-all duration-300 rounded-full"
+//               style={{ width: index === activeIndex ? '24px' : '7px', height: '7px', background: index === activeIndex ? filteredProjects[index].accent : dotInactive }}
+//               aria-label={`Go to project ${index + 1}`}
+//             />
+//           ))}
+//         </div>
+
+//         {/* Counter */}
+//         <div className="text-center mt-3 text-xs text-muted-foreground">
+//           <span style={{ color: filteredProjects[activeIndex]?.accent }} className="font-semibold text-sm">
+//             {String(activeIndex + 1).padStart(2, '0')}
+//           </span>
+//           <span className="mx-1.5 opacity-50">/</span>
+//           {String(filteredProjects.length).padStart(2, '0')}
+//         </div>
+//       </div>
+
+//       {/* CTA */}
+//       <div className={`container mx-auto max-w-6xl text-center mt-12 sm:mt-20 px-4 sm:px-6 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+//         <p className="text-xs sm:text-base text-muted-foreground mb-4 sm:mb-5">
+//           Interested in seeing more of my work or collaborating on a project?
+//         </p>
+//         <Button
+//           variant="default" size="lg"
+//           className="bg-primary hover:bg-primary/90 shadow-lg text-sm sm:text-base h-10 sm:h-11 px-6 sm:px-8 transition-all duration-300 hover:scale-105 active:scale-95"
+//           onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+//         >
+//           Let's Work Together
+//         </Button>
+//       </div>
+
+//     </section>
+//   );
+// };
+
+// export default Projects;
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CardDescription, CardTitle } from "@/components/ui/card";
@@ -12920,21 +13523,21 @@ const Projects = () => {
   const touchStartX = useRef<number|null>(null);
   const touchStartY = useRef<number|null>(null);
 
-  /* ── Dark mode ── */
+  /* ── Dark mode (follows the SITE theme only, NOT the OS preference) ── */
   useEffect(() => {
     const check = () =>
       setIsDark(
         document.documentElement.classList.contains("dark") ||
         document.body.classList.contains("dark") ||
-        window.matchMedia("(prefers-color-scheme: dark)").matches
+        document.documentElement.getAttribute("data-theme") === "dark"
       );
     check();
+
     const mo = new MutationObserver(check);
-    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    mo.observe(document.body,            { attributes: true, attributeFilter: ["class"] });
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    mq.addEventListener("change", check);
-    return () => { mo.disconnect(); mq.removeEventListener("change", check); };
+    mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-theme"] });
+    mo.observe(document.body,            { attributes: true, attributeFilter: ["class", "data-theme"] });
+
+    return () => mo.disconnect();
   }, []);
 
   /* ── Mobile detection ── */

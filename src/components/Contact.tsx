@@ -21017,7 +21017,7 @@ const Contact = () => {
   const dark = useDark();
   const display = useDisplayPrefs();
   const [formData, setFormData] = useState({ name:"", email:"", subject:"", message:"" });
-  const [isVisible, setIsVisible] = useState(false);
+	const [isVisible, setIsVisible] = useState(true);
 
   const handleSubmit = (e:React.FormEvent) => {
     e.preventDefault();
@@ -21031,7 +21031,9 @@ const Contact = () => {
   };
 
   useEffect(()=>{
-    const obs=new IntersectionObserver(entries=>entries.forEach(e=>setIsVisible(e.isIntersecting)),{threshold:0.1,rootMargin:"0px 0px -100px 0px"});
+		const obs=new IntersectionObserver(entries=>entries.forEach(e=>{
+			if(e.isIntersecting) setIsVisible(true);
+		}),{threshold:0.1,rootMargin:"0px 0px -100px 0px"});
     const sec=document.getElementById("contact");
     if(sec)obs.observe(sec);
     return()=>{if(sec)obs.unobserve(sec);};
@@ -21065,7 +21067,7 @@ const Contact = () => {
             <div className="space-y-4">
               {contactInfo.map((c,i)=>(
                 <a key={i} href={c.href} target={c.href.startsWith("http")?"_blank":undefined} rel={c.href.startsWith("http")?"noopener noreferrer":undefined}
-                  className="flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:bg-accent transition-all duration-300 hover:scale-105 group"
+									className="flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:bg-card transition-all duration-300 hover:scale-105 group"
                 >
                   <div className={`p-2 rounded-lg bg-background ${c.color}`}><c.icon size={20} /></div>
                   <div>
