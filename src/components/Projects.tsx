@@ -29515,6 +29515,775 @@
 // };
 
 // export default Projects;
+// import { Badge } from "@/components/ui/badge";
+// import { Button } from "@/components/ui/button";
+// import { CardDescription, CardTitle } from "@/components/ui/card";
+// import { Calendar, Github, FileText, Cpu, Code, ChevronLeft, ChevronRight, ExternalLink, LayoutGrid } from "lucide-react";
+// import { useEffect, useRef, useState } from "react";
+
+// /* ── Desktop layout tuning: centre card in front, neighbours peek out from behind ── */
+// const CARD_H = 500;       // px – desktop card height (lower = shorter cards, raise if content gets clipped)
+// const SIDE_VISIBLE = 0.5; // fraction of each side card that stays visible (0.5 = half hidden behind the one in front)
+// const SIDE_SCALE = 0.9;   // inner side cards (2nd & 3rd)
+// const FAR_SCALE  = 0.8;   // outer side cards (4th & 5th)
+// const SIDE_DROP  = 22;    // px the inner side cards sit lower
+// const FAR_DROP   = 44;    // px the outer side cards sit lower
+// const SIDE_MARGIN = 12;   // px kept free at the screen edges
+// const SLIDE_MS = 650;     // ms – mobile swipe: how slowly the next card settles into place
+
+
+// const Projects = () => {
+//   const [isVisible, setIsVisible]           = useState(false);
+//   const [activeIndex, setActiveIndex]       = useState(0);
+//   const [activeCategory, setActiveCategory] = useState("all");
+//   const [isAnimating, setIsAnimating]       = useState(false);
+//   const [slideDir, setSlideDir]             = useState<'left'|'right'|null>(null);
+//   const [isDark, setIsDark]                 = useState(false);
+//   const [isMobile, setIsMobile]             = useState(false);
+//   const [vw, setVw]                         = useState(1440);
+//   const [hoveredFilter, setHoveredFilter]   = useState<string|null>(null);
+//   const sectionRef  = useRef<HTMLElement>(null);
+//   const touchStartX = useRef<number|null>(null);
+//   const touchStartY = useRef<number|null>(null);
+//   const touchStartT = useRef(0);
+//   const axisLock    = useRef<'x'|'y'|null>(null);
+//   const [dragX, setDragX]                   = useState(0);      // live finger offset (mobile)
+//   const [dragging, setDragging]             = useState(false);  // true while the finger is down (no CSS transition)
+
+//   /* ── Dark mode (follows the SITE theme only, NOT the OS preference) ── */
+//   useEffect(() => {
+//     const check = () =>
+//       setIsDark(
+//         document.documentElement.classList.contains("dark") ||
+//         document.body.classList.contains("dark") ||
+//         document.documentElement.getAttribute("data-theme") === "dark"
+//       );
+//     check();
+
+//     const mo = new MutationObserver(check);
+//     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class", "data-theme"] });
+//     mo.observe(document.body,            { attributes: true, attributeFilter: ["class", "data-theme"] });
+
+//     return () => mo.disconnect();
+//   }, []);
+
+//   /* ── Mobile detection ── */
+//   useEffect(() => {
+//     const check = () => { setIsMobile(window.innerWidth < 640); setVw(window.innerWidth); };
+//     check();
+//     window.addEventListener("resize", check);
+//     return () => window.removeEventListener("resize", check);
+//   }, []);
+
+//   const projects = [
+//     {
+//       title: "Smart Pet Feeder",
+//       period: "Aug 2023 – Jan 2024",
+//       description: "A comprehensive smart feeding solution for pets with automated scheduling and remote monitoring capabilities.",
+//       features: [
+//         "Smart feeder system dispensing food at scheduled intervals",
+//         "Web dashboard for real-time remote monitoring and control",
+//         "Consistent feeding cycles enhancing pet owner convenience"
+//       ],
+//       technologies: ["IoT", "Web Dashboard", "Real-time Monitoring", "Automation"],
+//       type: "Hardware & Software",
+//       category: "hardware",
+//       pdfUrl: "/assets/certificates/thomas.pdf",
+//       githubUrl: "https://github.com/Thomasjose-tech/Smart-Pet-Feeder",
+//       backContent: {
+//         challenges: "Designing reliable dispensing mechanism and consistent connectivity for remote monitoring.",
+//         learnings: "IoT integration, real-time data processing, and hardware-software communication protocols.",
+//         impact: "Reduced feeding inconsistencies by 85%; peace of mind through remote monitoring."
+//       },
+//       accent: "#6366f1", emoji: "🐾"
+//     },
+//     {
+//       title: "Multipurpose Agriculture Robot",
+//       period: "Mar 2024 – Feb 2025",
+//       description: "An intelligent robotic system designed to automate multiple agricultural tasks and improve farming efficiency.",
+//       features: [
+//         "Robotic system for soil monitoring, seed sowing, and spraying",
+//         "Sensors and actuators automating processes to reduce manual labor",
+//         "Remote operation reducing need for constant human supervision"
+//       ],
+//       technologies: ["Robotics", "IoT Sensors", "Automation", "Embedded Systems", "Remote Control"],
+//       type: "Analytics & IoT",
+//       category: "hardware",
+//       pdfUrl: "/assets/certificates/grp11.pdf",
+//       githubUrl: "https://github.com/Thomasjose-tech",
+//       backContent: {
+//         challenges: "Integrating multiple agricultural functions while maintaining cost-effectiveness.",
+//         learnings: "Advanced robotics, sensor fusion techniques, and precision agriculture methodologies.",
+//         impact: "Increased efficiency by 60% and reduced labor costs by 45%."
+//       },
+//       accent: "#10b981", emoji: "🤖"
+//     },
+//     {
+//       title: "Cross-Language Craft",
+//       period: "2024",
+//       description: "A sophisticated real-time language translation application enabling seamless communication across multiple languages.",
+//       features: [
+//         "Real-time translation supporting multiple languages",
+//         "Intuitive UI for instant language conversion",
+//         "Responsive interface for desktop and mobile devices"
+//       ],
+//       technologies: ["React", "Translation API", "Responsive Design", "Real-time Processing"],
+//       type: "Frontend Development",
+//       category: "frontend",
+//       liveUrl: "https://cross-language-craft-26011.vercel.app/",
+//       backContent: {
+//         challenges: "Accurate translations with fast response times across diverse language character sets.",
+//         learnings: "API integration, state management in React, fluid UX for real-time apps.",
+//         impact: "Seamless cross-language communication with an intuitive interface."
+//       },
+//       accent: "#f59e0b", emoji: "🌍"
+//     },
+//     {
+//       title: "Financuz Nexus",
+//       period: "2024",
+//       description: "A comprehensive financial management platform providing tools for budget tracking, expense analysis, and planning.",
+//       features: [
+//         "Interactive dashboard for financial data visualization",
+//         "Expense tracking and smart categorization system",
+//         "Budget planning and deep analysis tools"
+//       ],
+//       technologies: ["React", "Data Visualization", "UI/UX Design", "State Management"],
+//       type: "Frontend Development",
+//       category: "frontend",
+//       liveUrl: "https://financuz-nexus-01.vercel.app/",
+//       backContent: {
+//         challenges: "Simplifying complex financial data while maintaining security and performance.",
+//         learnings: "Advanced React patterns, data visualization, user-centric financial UX design.",
+//         impact: "Simplified personal finance with clear visualizations and easy tracking."
+//       },
+//       accent: "#ec4899", emoji: "💰"
+//     },
+//     {
+//       title: "Chronos – Luxury Timepieces",
+//       period: "2024",
+//       description: "An elegant e-commerce platform showcasing premium luxury watches with sophisticated design and seamless shopping.",
+//       features: [
+//         "Premium product showcase with high-quality imagery",
+//         "Smooth animations and interactive UI elements",
+//         "Intuitive navigation and product filtering system"
+//       ],
+//       technologies: ["React", "E-commerce UI", "Animation", "Responsive Design"],
+//       type: "Frontend Development",
+//       category: "frontend",
+//       liveUrl: "https://chronos-luxury-timepieces.vercel.app/",
+//       backContent: {
+//         challenges: "Balancing aesthetic appeal with performance for a luxury brand feel.",
+//         learnings: "Advanced CSS techniques, animation libraries, high-end e-commerce UX.",
+//         impact: "Elevated luxury shopping experience with elegant design and smooth interactions."
+//       },
+//       accent: "#8b5cf6", emoji: "⌚"
+//     }
+//   ];
+
+//   const filteredProjects = activeCategory === "all"
+//     ? projects
+//     : projects.filter(p => p.category === activeCategory);
+
+//   useEffect(() => { setActiveIndex(0); }, [activeCategory]);
+
+//   useEffect(() => {
+//     const obs = new IntersectionObserver(
+//       entries => entries.forEach(e => setIsVisible(e.isIntersecting)),
+//       { threshold: 0.05 }
+//     );
+//     if (sectionRef.current) obs.observe(sectionRef.current);
+//     return () => { if (sectionRef.current) obs.unobserve(sectionRef.current); };
+//   }, []);
+
+//   /* Mobile: finish a slide (from a swipe or an arrow tap). The current card slides out
+//      while the next one slides in behind the finger, then we silently swap the active index. */
+//   const completeSlide = (dir: 'left'|'right') => {
+//     if (isAnimating) return;
+//     const total = filteredProjects.length;
+//     if (total < 2) { setDragging(false); setDragX(0); return; }
+//     setIsAnimating(true);
+//     setDragging(false);
+//     setDragX(dir === 'right' ? -vw : vw);
+//     setTimeout(() => {
+//       setDragging(true); // no transition for the invisible reset
+//       setActiveIndex(prev => dir === 'right' ? (prev + 1) % total : (prev - 1 + total) % total);
+//       setDragX(0);
+//       setTimeout(() => { setDragging(false); setIsAnimating(false); }, 60);
+//     }, SLIDE_MS);
+//   };
+
+//   const handleNav = (dir: 'left'|'right') => {
+//     if (isAnimating) return;
+//     if (isMobile) { completeSlide(dir); return; }
+//     setIsAnimating(true);
+//     setSlideDir(dir);
+//     setTimeout(() => {
+//       setActiveIndex(prev =>
+//         dir === 'right'
+//           ? (prev + 1) % filteredProjects.length
+//           : (prev - 1 + filteredProjects.length) % filteredProjects.length
+//       );
+//       setSlideDir(null);
+//       setIsAnimating(false);
+//     }, 280);
+//   };
+
+//   /* Mobile touch: the cards follow the finger; release decides whether to complete or snap back */
+//   const onTouchStart = (e: React.TouchEvent) => {
+//     if (isAnimating) return;
+//     touchStartX.current = e.touches[0].clientX;
+//     touchStartY.current = e.touches[0].clientY;
+//     touchStartT.current = Date.now();
+//     axisLock.current = null;
+//   };
+//   const onTouchMove = (e: React.TouchEvent) => {
+//     if (touchStartX.current === null || isAnimating) return;
+//     const dx = e.touches[0].clientX - touchStartX.current;
+//     const dy = e.touches[0].clientY - (touchStartY.current ?? 0);
+//     if (axisLock.current === null) {
+//       if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+//       axisLock.current = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+//     }
+//     if (axisLock.current !== 'x' || filteredProjects.length < 2) return;
+//     setDragging(true);
+//     setDragX(Math.max(-vw, Math.min(vw, dx)));
+//   };
+//   const onTouchEnd = () => {
+//     if (touchStartX.current === null) return;
+//     const wasHorizontal = axisLock.current === 'x';
+//     const quickFlick = Date.now() - touchStartT.current < 300 && Math.abs(dragX) > 40;
+//     touchStartX.current = null;
+//     axisLock.current = null;
+//     if (!wasHorizontal) return;
+//     if (Math.abs(dragX) > vw * 0.22 || quickFlick) completeSlide(dragX < 0 ? 'right' : 'left');
+//     else { setDragging(false); setDragX(0); }
+//   };
+//   const onTouchCancel = () => {
+//     touchStartX.current = null;
+//     axisLock.current = null;
+//     setDragging(false);
+//     setDragX(0);
+//   };
+
+//   /* Card width: medium size, scales a little with the screen (400 – 500px) */
+//   const getCardW = () => Math.round(Math.min(500, Math.max(400, vw * 0.26)));
+
+//   /* Horizontal offsets (px): each card tucks behind the one in front and only SIDE_VISIBLE of it shows */
+//   const getShifts = () => {
+//     const w  = getCardW();
+//     const sw = w * SIDE_SCALE;
+//     const fw = w * FAR_SCALE;
+//     const innerWanted = w / 2 + SIDE_VISIBLE * sw - sw / 2;                 // inner card centre
+//     const inner = Math.min(innerWanted, vw / 2 - sw / 2 - SIDE_MARGIN);
+//     const farWanted = inner + sw / 2 + SIDE_VISIBLE * fw - fw / 2;          // outer card centre
+//     const far   = Math.min(farWanted, vw / 2 - fw / 2 - SIDE_MARGIN);
+//     return { inner, far: Math.max(far, inner + 40) };
+//   };
+
+//   /* Jump straight to a card (used when a side card is clicked) */
+//   const goTo = (index: number) => {
+//     if (isAnimating || index === activeIndex) return;
+//     setIsAnimating(true);
+//     setTimeout(() => { setActiveIndex(index); setIsAnimating(false); }, 280);
+//   };
+
+//   /* Desktop: 1 centre card, 2 cards on each side (inner + outer) */
+//   type Pos = 'center' | 'right' | 'left' | 'farRight' | 'farLeft' | 'hidden';
+//   const getDesktopPosition = (index: number): Pos => {
+//     const total = filteredProjects.length;
+//     const diff  = (index - activeIndex + total) % total;
+//     if (diff === 0)         return 'center';
+//     if (diff === 1)         return 'right';
+//     if (diff === total - 1) return 'left';
+//     if (diff === 2)         return 'farRight';
+//     if (diff === total - 2) return 'farLeft';
+//     return 'hidden';
+//   };
+
+//   const getDesktopCardStyle = (index: number) => {
+//     const pos = getDesktopPosition(index);
+//     const { inner, far } = getShifts();
+//     const base = { pointerEvents: 'none' as const, visibility: 'visible' as const, opacity: 1 };
+
+//     switch (pos) {
+//       case 'center':
+//         return { zIndex: 30, transform: 'translateX(0) translateY(0) scale(1)', opacity: 1,
+//                  pointerEvents: 'auto' as const, visibility: 'visible' as const };
+//       case 'right':
+//         return { ...base, zIndex: 20, transform: `translateX(${inner}px) translateY(${SIDE_DROP}px) scale(${SIDE_SCALE})` };
+//       case 'left':
+//         return { ...base, zIndex: 20, transform: `translateX(${-inner}px) translateY(${SIDE_DROP}px) scale(${SIDE_SCALE})` };
+//       case 'farRight':
+//         return { ...base, zIndex: 10, transform: `translateX(${far}px) translateY(${FAR_DROP}px) scale(${FAR_SCALE})` };
+//       case 'farLeft':
+//         return { ...base, zIndex: 10, transform: `translateX(${-far}px) translateY(${FAR_DROP}px) scale(${FAR_SCALE})` };
+//       default:
+//         return { zIndex: 0, transform: `translateX(0) translateY(${FAR_DROP}px) scale(0.7)`,
+//                  opacity: 0, pointerEvents: 'none' as const, visibility: 'hidden' as const };
+//     }
+//   };
+
+//   const getDesktopOverlay = (index: number) => {
+//     const pos = getDesktopPosition(index);
+//     if (pos === 'center') return null;
+//     return 'transparent'; // no fade – side cards stay sharp, still clickable
+//   };
+
+//   const techIcons: Record<string, string> = {
+//     "iot":"🌐","web dashboard":"📊","real-time monitoring":"📡","automation":"⚡",
+//     "robotics":"🤖","iot sensors":"📱","embedded systems":"🔧","remote control":"📡",
+//     "react":"⚛️","translation api":"🌍","responsive design":"📱","real-time processing":"⚡",
+//     "data visualization":"📊","ui/ux design":"🎨","state management":"🔄",
+//     "e-commerce ui":"🛍️","animation":"✨"
+//   };
+
+//   const cardBg    = isDark ? '#13131f' : '#ffffff';
+//   const getBorder = (active: boolean, accent: string) =>
+//     active ? `2px solid ${accent}55` : isDark ? '2px solid rgba(255,255,255,0.08)' : '2px solid rgba(0,0,0,0.08)';
+//   const getShadow = (active: boolean, accent: string) =>
+//     active
+//       ? `0 20px 50px -10px ${accent}35, 0 0 0 1px ${accent}18`
+//       : isDark ? '0 6px 28px rgba(0,0,0,0.65)' : '0 4px 20px rgba(0,0,0,0.09)';
+//   const dotInactive = isDark ? 'rgba(255,255,255,0.22)' : 'rgba(0,0,0,0.18)';
+//   const arrowCls    = isDark
+//     ? 'bg-white/10 border-white/20 text-white hover:bg-white/20 hover:border-white/40'
+//     : 'bg-black/5 border-black/10 text-gray-600 hover:bg-black/10 hover:border-black/20 hover:text-gray-900';
+
+//   const filterTabs = [
+//     { key: 'all',      label: 'All Projects', Icon: LayoutGrid },
+//     { key: 'hardware', label: 'Hardware',     Icon: Cpu        },
+//     { key: 'frontend', label: 'Frontend',     Icon: Code       },
+//   ];
+
+//   /* ── Shared card body (tighter spacing for a shorter card) ── */
+//   const CardBody = ({ project, isActive }: { project: typeof projects[0]; isActive: boolean }) => (
+//     <div className="draw-card flex flex-col p-3 sm:p-4 h-full">
+
+//       {/* Header */}
+//       <div className="flex items-start justify-between mb-2 gap-2">
+//         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+//           <div
+//             className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center text-xl sm:text-2xl flex-shrink-0"
+//             style={{ background: `${project.accent}1a`, border: `1px solid ${project.accent}40` }}
+//           >
+//             {project.emoji}
+//           </div>
+//           <div className="min-w-0">
+//             <Badge className="text-xs mb-0.5 border-none px-1.5 py-0.5" style={{ background: `${project.accent}1a`, color: project.accent }}>
+//               {project.type}
+//             </Badge>
+//             <CardTitle className="text-base sm:text-lg lg:text-xl leading-tight text-foreground">{project.title}</CardTitle>
+//           </div>
+//         </div>
+//         <div className="flex items-center text-muted-foreground text-xs flex-shrink-0 mt-1 whitespace-nowrap">
+//           <Calendar size={11} className="mr-1" />{project.period}
+//         </div>
+//       </div>
+
+//       {/* Description */}
+//       <CardDescription className="text-xs sm:text-sm leading-snug mb-2 sm:line-clamp-2">{project.description}</CardDescription>
+
+//       {/* Key Features */}
+//       <div className="mb-2">
+//         <h4 className="font-semibold mb-1 text-xs sm:text-sm" style={{ color: project.accent }}>Key Features</h4>
+//         <ul className="space-y-0">
+//           {project.features.map((f, fi) => (
+//             <li key={fi} className="text-muted-foreground text-xs sm:text-sm leading-snug flex items-start">
+//               <span className="w-1.5 h-1.5 rounded-full mr-2 mt-1 flex-shrink-0" style={{ background: project.accent }} />
+//               {f}
+//             </li>
+//           ))}
+//         </ul>
+//       </div>
+
+//       {/* Technologies */}
+//       <div className="mb-2">
+//         <h4 className="font-semibold mb-1 text-xs sm:text-sm" style={{ color: project.accent }}>Technologies</h4>
+//         <div className="flex flex-wrap gap-1">
+//           {project.technologies.slice(0, isMobile ? 3 : project.technologies.length).map(tech => (
+//             <Badge key={tech} className="text-xs px-1.5 py-0.5 border-none" style={{ background: `${project.accent}18`, color: project.accent }}>
+//               {techIcons[tech.toLowerCase()] || '💻'} {tech}
+//             </Badge>
+//           ))}
+//           {isMobile && project.technologies.length > 3 && (
+//             <Badge className="text-xs px-1.5 py-0.5 border-none" style={{ background: `${project.accent}10`, color: project.accent }}>
+//               +{project.technologies.length - 3} more
+//             </Badge>
+//           )}
+//         </div>
+//       </div>
+
+//       {/* Insights */}
+//       {isActive && (
+//         <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5 mb-2 text-[11px]">
+//           {[
+//             { label: '🚧 Challenge', value: project.backContent.challenges },
+//             { label: '📚 Learning',  value: project.backContent.learnings  },
+//             { label: '📈 Impact',    value: project.backContent.impact     },
+//           ].map(({ label, value }) => (
+//             <div key={label} className="rounded-lg p-1.5" style={{ background: isDark ? `${project.accent}12` : `${project.accent}0d`, border: `1px solid ${project.accent}25` }}>
+//               <div className="font-semibold mb-0.5" style={{ color: project.accent }}>{label}</div>
+//               <div className="text-muted-foreground leading-snug sm:line-clamp-3">{value}</div>
+//             </div>
+//           ))}
+//         </div>
+//       )}
+
+//       {/* Buttons – icons re-draw while the cursor is on the card */}
+//       <div className="flex gap-2 mt-auto pt-1">
+//         <Button
+//           size="sm"
+//           className="draw-btn flex-1 h-8 text-xs font-semibold shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md active:scale-95"
+//           style={{ background: project.accent, color: '#fff', border: 'none' }}
+//           onClick={() => {
+//             if (project.liveUrl) window.open(project.liveUrl, "_blank");
+//             else if (project.pdfUrl) window.open(project.pdfUrl, "_blank");
+//           }}
+//         >
+//           {project.liveUrl
+//             ? <>
+//                 <ExternalLink size={13} className="draw-icon draw-live mr-1.5" />
+//                 View Live
+//               </>
+//             : <>
+//                 <FileText size={13} className="draw-icon draw-doc mr-1.5" />
+//                 View Details
+//               </>}
+//         </Button>
+//         {project.githubUrl && (
+//           <Button
+//             variant="outline" size="sm"
+//             className="draw-btn code-btn flex-1 h-8 text-xs transition-all duration-300 hover:-translate-y-0.5 active:scale-95"
+//             style={{ borderColor: `${project.accent}50`, color: project.accent, '--btn-accent': project.accent, '--btn-soft': `${project.accent}1f` } as React.CSSProperties}
+//             onClick={() => window.open(project.githubUrl, "_blank")}
+//           >
+//             <Github size={13} className="draw-icon draw-git mr-1.5" />
+//             Code
+//           </Button>
+//         )}
+//       </div>
+//     </div>
+//   );
+
+//   const activeProject = filteredProjects[activeIndex];
+
+//   return (
+//     <section id="projects" ref={sectionRef} className="py-12 sm:py-20 lg:py-28 overflow-hidden bg-background">
+//       {/* Looping line-drawing animation for the button icons (plays while the card is hovered) */}
+//       <style>{`
+//         /* draw -> hold -> erase, then repeat. Every stroke uses the same length of loop,
+//            and its delay staggers it, so the order (frame -> arrow, outline -> lines) repeats every cycle */
+//         @keyframes iconLoop {
+//           0%   { stroke-dashoffset: 60; }
+//           30%  { stroke-dashoffset: 0; }
+//           75%  { stroke-dashoffset: 0; }
+//           100% { stroke-dashoffset: -60; }
+//         }
+//         @keyframes iconLoopLong {
+//           0%   { stroke-dashoffset: 100; }
+//           30%  { stroke-dashoffset: 0; }
+//           75%  { stroke-dashoffset: 0; }
+//           100% { stroke-dashoffset: -100; }
+//         }
+//         .draw-icon path { stroke-dasharray: 60; stroke-dashoffset: 0; }
+//         .draw-icon.draw-git path { stroke-dasharray: 100; }
+
+//         /* Icons stay fully drawn until you point at the card, then they keep re-drawing while the cursor is on it.
+//            Order per loop: View Live = frame, arrow. View Details = outline, corner, lines. Code = outline, tail. */
+//         .draw-card:hover .draw-live path:nth-child(3) { animation: iconLoop 3s ease-in-out 0s infinite both; }
+//         .draw-card:hover .draw-live path:nth-child(2) { animation: iconLoop 3s ease-in-out .4s infinite both; }
+//         .draw-card:hover .draw-live path:nth-child(1) { animation: iconLoop 3s ease-in-out .65s infinite both; }
+//         .draw-card:hover .draw-doc path:nth-child(1) { animation: iconLoop 3s ease-in-out 0s infinite both; }
+//         .draw-card:hover .draw-doc path:nth-child(2) { animation: iconLoop 3s ease-in-out .35s infinite both; }
+//         .draw-card:hover .draw-doc path:nth-child(3) { animation: iconLoop 3s ease-in-out .55s infinite both; }
+//         .draw-card:hover .draw-doc path:nth-child(4) { animation: iconLoop 3s ease-in-out .7s infinite both; }
+//         .draw-card:hover .draw-doc path:nth-child(5) { animation: iconLoop 3s ease-in-out .85s infinite both; }
+//         .draw-card:hover .draw-git path:nth-child(1) { animation: iconLoopLong 3s ease-in-out 0s infinite both; }
+//         .draw-card:hover .draw-git path:nth-child(2) { animation: iconLoopLong 3s ease-in-out .6s infinite both; }
+
+//         /* Touch screens have no hover: the visible card's icons loop on their own */
+//         @media (hover: none) {
+//         .draw-card .draw-live path:nth-child(3) { animation: iconLoop 3s ease-in-out 0s infinite both; }
+//         .draw-card .draw-live path:nth-child(2) { animation: iconLoop 3s ease-in-out .4s infinite both; }
+//         .draw-card .draw-live path:nth-child(1) { animation: iconLoop 3s ease-in-out .65s infinite both; }
+//         .draw-card .draw-doc path:nth-child(1) { animation: iconLoop 3s ease-in-out 0s infinite both; }
+//         .draw-card .draw-doc path:nth-child(2) { animation: iconLoop 3s ease-in-out .35s infinite both; }
+//         .draw-card .draw-doc path:nth-child(3) { animation: iconLoop 3s ease-in-out .55s infinite both; }
+//         .draw-card .draw-doc path:nth-child(4) { animation: iconLoop 3s ease-in-out .7s infinite both; }
+//         .draw-card .draw-doc path:nth-child(5) { animation: iconLoop 3s ease-in-out .85s infinite both; }
+//         .draw-card .draw-git path:nth-child(1) { animation: iconLoopLong 3s ease-in-out 0s infinite both; }
+//         .draw-card .draw-git path:nth-child(2) { animation: iconLoopLong 3s ease-in-out .6s infinite both; }
+//         }
+
+//         /* Soft accent-coloured hover (no dark fill) for the Code button */
+//         .code-btn:hover {
+//           background: var(--btn-soft) !important;
+//           border-color: var(--btn-accent) !important;
+//           color: var(--btn-accent) !important;
+//         }
+
+//         @media (prefers-reduced-motion: reduce) {
+//           .draw-icon path { animation: none !important; }
+//         }
+//       `}</style>
+
+//       <div className="container mx-auto max-w-6xl">
+
+//         {/* Header */}
+//         <div className={`text-center mb-8 sm:mb-14 px-4 sm:px-6 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}`}>
+//           <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-foreground">Featured Projects</h2>
+//           <div className="h-1 w-16 sm:w-24 bg-primary mx-auto mb-4 sm:mb-6 rounded-full" />
+//           <p className="text-sm sm:text-lg text-muted-foreground max-w-2xl mx-auto">
+//             Innovative solutions combining hardware and software to solve real-world problems
+//           </p>
+//         </div>
+
+//         {/* ── Filter Pills ──
+//             Mobile  : icon only; tooltip label floats BELOW on hover/tap
+//             Desktop : icon + full label
+//         ── */}
+//         <div className={`flex justify-center mb-8 sm:mb-14 px-4 sm:px-6 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"}`}>
+//           <div className="inline-flex rounded-lg border border-primary/20 bg-muted/50 p-1 gap-1" style={{ paddingBottom: isMobile ? '4px' : undefined }}>
+//             {filterTabs.map(({ key, label, Icon }) => {
+//               const isAct  = activeCategory === key;
+//               const count  = key === 'all' ? projects.length : projects.filter(p => p.category === key).length;
+//               const accent = activeProject?.accent ?? '#6366f1';
+//               return (
+//                 <div key={key} className="relative flex flex-col items-center">
+//                   <button
+//                     onClick={() => setActiveCategory(key)}
+//                     onMouseEnter={() => setHoveredFilter(key)}
+//                     onMouseLeave={() => setHoveredFilter(null)}
+//                     onFocus={() => setHoveredFilter(key)}
+//                     onBlur={() => setHoveredFilter(null)}
+//                     onTouchStart={() => setHoveredFilter(hoveredFilter === key ? null : key)}
+//                     className={`flex items-center justify-center gap-1.5 rounded-md h-9 transition-all duration-300 ${
+//                       isAct
+//                         ? (isDark
+//                             ? 'bg-primary text-primary-foreground shadow-sm'
+//                             : 'bg-white text-gray-900 shadow-sm ring-1 ring-black/10')
+//                         : isDark ? 'text-muted-foreground hover:bg-white/10' : 'text-muted-foreground hover:bg-black/5'
+//                     }`}
+//                     style={{ padding: isMobile ? '0 10px' : '0 14px' }}
+//                     aria-label={label}
+//                   >
+//                     <Icon size={15} className="flex-shrink-0" />
+//                     {!isMobile && <span className="text-sm font-medium">{label}</span>}
+//                     <span
+//                       className="text-xs min-w-[18px] h-4 flex items-center justify-center px-1 rounded-full"
+//                       style={{
+//                         background: isAct && isDark ? 'rgba(255,255,255,0.25)' : `${accent}22`,
+//                         color:      isAct && isDark ? '#fff' : accent,
+//                       }}
+//                     >
+//                       {count}
+//                     </span>
+//                   </button>
+
+//                   {/* Tooltip — mobile only */}
+//                   {isMobile && (
+//                     <span
+//                       aria-hidden="true"
+//                       className="pointer-events-none absolute text-xs font-medium whitespace-nowrap rounded-md px-2 py-0.5 z-50 transition-all duration-200"
+//                       style={{
+//                         top:        '100%',
+//                         left:       '50%',
+//                         marginTop:  '4px',
+//                         transform:  `translateX(-50%) translateY(${hoveredFilter === key ? '0px' : '-4px'})`,
+//                         opacity:    hoveredFilter === key ? 1 : 0,
+//                         background: isDark ? 'rgba(20,20,36,0.97)' : 'rgba(255,255,255,0.97)',
+//                         color:      isDark ? '#e2e2f0' : '#222',
+//                         boxShadow:  '0 2px 10px rgba(0,0,0,0.18)',
+//                         border:     `1px solid ${accent}33`,
+//                       }}
+//                     >
+//                       {label}
+//                     </span>
+//                   )}
+//                 </div>
+//               );
+//             })}
+//           </div>
+//         </div>
+
+//       </div>{/* /container */}
+
+//       {/* ── Carousel ── */}
+//       <div className={`transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+
+//         {/* ═══════════════ MOBILE ═══════════════
+//             Front card + ghost layers stacked behind it.
+//             Height = auto so nothing gets cut off.
+//         ════════════════════════════════════════ */}
+//         {isMobile && (
+//           <div
+//             className="relative w-full"
+//             style={{ touchAction: 'pan-y' }}
+//             onTouchStart={onTouchStart}
+//             onTouchMove={onTouchMove}
+//             onTouchEnd={onTouchEnd}
+//             onTouchCancel={onTouchCancel}
+//           >
+//             <div className="relative px-3" style={{ paddingBottom: '26px', overflowX: 'clip' }}>
+//               {(() => {
+//                 const total = filteredProjects.length;
+//                 const slides: { project: typeof projects[0]; offset: -1 | 0 | 1; key: string }[] = [];
+//                 if (total > 1) {
+//                   slides.push({ project: filteredProjects[(activeIndex - 1 + total) % total], offset: -1, key: 'prev' });
+//                   slides.push({ project: filteredProjects[(activeIndex + 1) % total],         offset:  1, key: 'next' });
+//                 }
+//                 if (activeProject) slides.push({ project: activeProject, offset: 0, key: 'current' });
+
+//                 return slides.map(({ project, offset, key }) => (
+//                   <div
+//                     key={key}
+//                     aria-hidden={offset !== 0}
+//                     className={`overflow-hidden ${offset === 0 ? 'relative' : 'absolute'}`}
+//                     style={{
+//                       zIndex: 1,
+//                       ...(offset !== 0 ? { top: 0, left: 12, right: 12 } : {}),
+//                       transform:  `translateX(${dragX + offset * vw}px)`,
+//                       transition: dragging ? 'none' : `transform ${SLIDE_MS}ms cubic-bezier(0.22, 1, 0.36, 1)`,
+//                       willChange: 'transform',
+//                       background:   cardBg,
+//                       border:       getBorder(true, project.accent),
+//                       boxShadow:    getShadow(true, project.accent),
+//                       borderRadius: 16,
+//                     }}
+//                   >
+//                     <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${project.accent}, ${project.accent}66)` }} />
+//                     {CardBody({ project, isActive: true })}
+//                   </div>
+//                 ));
+//               })()}
+//             </div>
+//           </div>
+//         )}
+
+//         {/* ═══════════════ DESKTOP ═══════════════
+//             Active card in front-centre; previous and next cards sit
+//             behind it on either side, slightly lower and smaller.
+//             Click a side card to bring it to the front.
+//         ════════════════════════════════════════ */}
+//         {!isMobile && (
+//           <div
+//             className="relative container mx-auto max-w-5xl"
+//             style={{ paddingLeft: '56px', paddingRight: '56px', paddingBottom: '16px' }}
+//           >
+//             <div className="relative w-full" style={{ minHeight: `${CARD_H + FAR_DROP}px`, isolation: 'isolate' }}>
+//               {filteredProjects.map((project, index) => {
+//                 const style   = getDesktopCardStyle(index);
+//                 const overlay = getDesktopOverlay(index);
+//                 const pos     = getDesktopPosition(index);
+//                 const isAct   = pos === 'center';
+//                 return (
+//                   <div
+//                     key={project.title}
+//                     className="absolute top-0 bottom-0 transition-all duration-500 ease-out"
+//                     style={{
+//                       ...style,
+//                       left:       '50%',
+//                       width:      getCardW(),
+//                       marginLeft: -getCardW() / 2,
+//                       transformOrigin: 'center center',
+//                     }}
+//                   >
+//                     {overlay && (
+//                       <div
+//                         className="absolute inset-0 z-10 cursor-pointer"
+//                         style={{ background: overlay, borderRadius: '16px', pointerEvents: 'auto' }}
+//                         onClick={() => goTo(index)}
+//                         aria-label={`Show ${project.title}`}
+//                         role="button"
+//                       />
+//                     )}
+//                     <div
+//                       className="h-full overflow-hidden flex flex-col relative"
+//                       style={{
+//                         background:   cardBg,
+//                         border:       getBorder(isAct, project.accent),
+//                         boxShadow:    isAct
+//                           ? `0 30px 60px -12px rgba(0,0,0,${isDark ? 0.7 : 0.35}), 0 0 0 1px ${project.accent}18`
+//                           : getShadow(false, project.accent),
+//                         minHeight:    `${CARD_H}px`,
+//                         borderRadius: '16px',
+//                       }}
+//                     >
+//                       <div className="h-1.5 w-full flex-shrink-0" style={{ background: `linear-gradient(90deg, ${project.accent}, ${project.accent}66)` }} />
+//                       <CardBody project={project} isActive={isAct} />
+//                     </div>
+//                   </div>
+//                 );
+//               })}
+//             </div>
+
+//           </div>
+//         )}
+
+//         {/* Swipe hint */}
+//         {isMobile && (
+//           <p className="text-center text-xs text-muted-foreground mt-4 opacity-55 px-4">
+//             ← Swipe or use arrows to navigate →
+//           </p>
+//         )}
+
+//         {/* Dot indicators */}
+//         <div className="flex justify-center items-center gap-2 sm:gap-2.5 mt-6 sm:mt-10 px-4">
+//           <button onClick={() => handleNav('left')} disabled={isAnimating} aria-label="Previous project"
+//             className={`mr-2 sm:mr-4 flex items-center justify-center rounded-full border backdrop-blur-md shadow-md transition-all duration-300 hover:scale-110 active:scale-90 disabled:opacity-35 ${arrowCls}`}
+//             style={{ width: isMobile ? 36 : 40, height: isMobile ? 36 : 40 }}>
+//             <ChevronLeft size={isMobile ? 18 : 20} />
+//           </button>
+//           {filteredProjects.map((project, index) => (
+//             <button
+//               key={index}
+//               onClick={() => {
+//                 if (!isAnimating && index !== activeIndex) {
+//                   setIsAnimating(true);
+//                   setTimeout(() => { setActiveIndex(index); setIsAnimating(false); }, 280);
+//                 }
+//               }}
+//               className="transition-all duration-300 rounded-full"
+//               style={{ width: index === activeIndex ? '24px' : '7px', height: '7px', background: index === activeIndex ? filteredProjects[index].accent : dotInactive }}
+//               aria-label={`Go to project ${index + 1}`}
+//             />
+//           ))}
+//           <button onClick={() => handleNav('right')} disabled={isAnimating} aria-label="Next project"
+//             className={`ml-2 sm:ml-4 flex items-center justify-center rounded-full border backdrop-blur-md shadow-md transition-all duration-300 hover:scale-110 active:scale-90 disabled:opacity-35 ${arrowCls}`}
+//             style={{ width: isMobile ? 36 : 40, height: isMobile ? 36 : 40 }}>
+//             <ChevronRight size={isMobile ? 18 : 20} />
+//           </button>
+//         </div>
+
+//         {/* Counter */}
+//         <div className="text-center mt-3 text-xs text-muted-foreground">
+//           <span style={{ color: filteredProjects[activeIndex]?.accent }} className="font-semibold text-sm">
+//             {String(activeIndex + 1).padStart(2, '0')}
+//           </span>
+//           <span className="mx-1.5 opacity-50">/</span>
+//           {String(filteredProjects.length).padStart(2, '0')}
+//         </div>
+//       </div>
+
+//       {/* CTA */}
+//       <div className={`container mx-auto max-w-6xl text-center mt-12 sm:mt-20 px-4 sm:px-6 transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+//         <p className="text-xs sm:text-base text-muted-foreground mb-4 sm:mb-5">
+//           Interested in seeing more of my work or collaborating on a project?
+//         </p>
+//         <Button
+//           variant="default" size="lg"
+//           className="bg-primary hover:bg-primary/90 shadow-lg text-sm sm:text-base h-10 sm:h-11 px-6 sm:px-8 transition-all duration-300 hover:scale-105 active:scale-95"
+//           onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+//         >
+//           Let's Work Together
+//         </Button>
+//       </div>
+
+//     </section>
+//   );
+// };
+
+// export default Projects;
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CardDescription, CardTitle } from "@/components/ui/card";
@@ -29529,7 +30298,8 @@ const FAR_SCALE  = 0.8;   // outer side cards (4th & 5th)
 const SIDE_DROP  = 22;    // px the inner side cards sit lower
 const FAR_DROP   = 44;    // px the outer side cards sit lower
 const SIDE_MARGIN = 12;   // px kept free at the screen edges
-const SLIDE_MS = 650;     // ms – mobile swipe: how slowly the next card settles into place
+const SLIDE_MS = 700;     // ms – mobile swipe: how long the next card takes to settle into place
+const REVEAL_PARALLAX = 0.25; // mobile swipe: how far the current card drifts (0 = stays still, 1 = moves with the finger)
 
 
 const Projects = () => {
@@ -29695,8 +30465,8 @@ const Projects = () => {
     return () => { if (sectionRef.current) obs.unobserve(sectionRef.current); };
   }, []);
 
-  /* Mobile: finish a slide (from a swipe or an arrow tap). The current card slides out
-     while the next one slides in behind the finger, then we silently swap the active index. */
+  /* Mobile: finish a slide (from a swipe or an arrow tap). The incoming card's edge sweeps
+     across to reveal it fully, then we silently swap the active index. */
   const completeSlide = (dir: 'left'|'right') => {
     if (isAnimating) return;
     const total = filteredProjects.length;
@@ -29728,7 +30498,7 @@ const Projects = () => {
     }, 280);
   };
 
-  /* Mobile touch: the cards follow the finger; release decides whether to complete or snap back */
+  /* Mobile touch: the reveal edge follows the finger; release decides whether to complete or snap back */
   const onTouchStart = (e: React.TouchEvent) => {
     if (isAnimating) return;
     touchStartX.current = e.touches[0].clientX;
@@ -30112,8 +30882,9 @@ const Projects = () => {
       <div className={`transition-all duration-1000 delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
 
         {/* ═══════════════ MOBILE ═══════════════
-            Front card + ghost layers stacked behind it.
-            Height = auto so nothing gets cut off.
+            Reveal-style swipe: the incoming card stays put in its final position and
+            its edge sweeps in from the side, following the finger. The current card
+            only drifts a little (parallax) while it is covered.
         ════════════════════════════════════════ */}
         {isMobile && (
           <div
@@ -30126,35 +30897,84 @@ const Projects = () => {
           >
             <div className="relative px-3" style={{ paddingBottom: '26px', overflowX: 'clip' }}>
               {(() => {
-                const total = filteredProjects.length;
-                const slides: { project: typeof projects[0]; offset: -1 | 0 | 1; key: string }[] = [];
-                if (total > 1) {
-                  slides.push({ project: filteredProjects[(activeIndex - 1 + total) % total], offset: -1, key: 'prev' });
-                  slides.push({ project: filteredProjects[(activeIndex + 1) % total],         offset:  1, key: 'next' });
-                }
-                if (activeProject) slides.push({ project: activeProject, offset: 0, key: 'current' });
+                const total  = filteredProjects.length;
+                const cardW  = vw - 24;                                    // card width (px-3 on each side)
+                const dx     = Math.max(-vw, Math.min(vw, dragX));         // finger offset
+                const next   = total > 1 ? filteredProjects[(activeIndex + 1) % total] : null;
+                const prev   = total > 1 ? filteredProjects[(activeIndex - 1 + total) % total] : null;
+                const easing = 'cubic-bezier(0.22, 1, 0.36, 1)';
+                const trans  = dragging ? 'none' : `transform ${SLIDE_MS}ms ${easing}, clip-path ${SLIDE_MS}ms ${easing}`;
 
-                return slides.map(({ project, offset, key }) => (
-                  <div
-                    key={key}
-                    aria-hidden={offset !== 0}
-                    className={`overflow-hidden ${offset === 0 ? 'relative' : 'absolute'}`}
-                    style={{
-                      zIndex: 1,
-                      ...(offset !== 0 ? { top: 0, left: 12, right: 12 } : {}),
-                      transform:  `translateX(${dragX + offset * vw}px)`,
-                      transition: dragging ? 'none' : `transform ${SLIDE_MS}ms cubic-bezier(0.22, 1, 0.36, 1)`,
-                      willChange: 'transform',
-                      background:   cardBg,
-                      border:       getBorder(true, project.accent),
-                      boxShadow:    getShadow(true, project.accent),
-                      borderRadius: 16,
-                    }}
-                  >
-                    <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${project.accent}, ${project.accent}66)` }} />
-                    {CardBody({ project, isActive: true })}
-                  </div>
-                ));
+                /* px of the incoming card that are still hidden: next comes in from the right, prev from the left */
+                const nextHiddenLeft  = dx < 0 ? Math.max(0, Math.min(cardW, vw + dx - 12)) : cardW;
+                const prevVisibleW    = dx > 0 ? Math.max(0, Math.min(cardW, dx - 12))       : 0;
+
+                const shell = (accent: string): React.CSSProperties => ({
+                  background:   cardBg,
+                  border:       getBorder(true, accent),
+                  boxShadow:    getShadow(true, accent),
+                  borderRadius: 16,
+                });
+
+                return (
+                  <>
+                    {/* Current card – barely moves, drifts a little as it gets covered */}
+                    {activeProject && (
+                      <div
+                        key="current"
+                        className="relative overflow-hidden"
+                        style={{
+                          zIndex: 1,
+                          transform:  `translateX(${dx * REVEAL_PARALLAX}px)`,
+                          transition: trans,
+                          willChange: 'transform',
+                          ...shell(activeProject.accent),
+                        }}
+                      >
+                        <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${activeProject.accent}, ${activeProject.accent}66)` }} />
+                        {CardBody({ project: activeProject, isActive: true })}
+                      </div>
+                    )}
+
+                    {/* Next card – fixed in place, uncovered from the right edge */}
+                    {next && (
+                      <div
+                        key="next"
+                        aria-hidden
+                        className="absolute overflow-hidden"
+                        style={{
+                          zIndex: 2, top: 0, left: 12, right: 12,
+                          clipPath:   `inset(0 0 0 ${nextHiddenLeft}px)`,
+                          transition: trans,
+                          willChange: 'clip-path',
+                          ...shell(next.accent),
+                        }}
+                      >
+                        <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${next.accent}, ${next.accent}66)` }} />
+                        {CardBody({ project: next, isActive: true })}
+                      </div>
+                    )}
+
+                    {/* Previous card – fixed in place, uncovered from the left edge */}
+                    {prev && (
+                      <div
+                        key="prev"
+                        aria-hidden
+                        className="absolute overflow-hidden"
+                        style={{
+                          zIndex: 2, top: 0, left: 12, right: 12,
+                          clipPath:   `inset(0 ${cardW - prevVisibleW}px 0 0)`,
+                          transition: trans,
+                          willChange: 'clip-path',
+                          ...shell(prev.accent),
+                        }}
+                      >
+                        <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${prev.accent}, ${prev.accent}66)` }} />
+                        {CardBody({ project: prev, isActive: true })}
+                      </div>
+                    )}
+                  </>
+                );
               })()}
             </div>
           </div>
